@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Flask
 
 from kleiderkammer.einstellungen.api import api as einstellungen_api
@@ -19,6 +21,10 @@ def create_app():
 
     # initialize oidc client
     oidc.init_app(app)
+
+    @app.context_processor
+    def inject_now():
+        return {'now': datetime.now()}
 
     return app
 
