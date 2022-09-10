@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "kleiderkammer"
+version = "0.1.0"
+description = ""
+authors = ["Michel Blank"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Flask = "^2.2.2"
+flask-oidc = {git = "https://github.com/puiterwijk/flask-oidc.git", rev = "refs/pull/144/head"}
+PyJWT = "^2.4.0"
+uWSGI = "^2.0.20"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
