@@ -23,6 +23,11 @@ def create_app():
     oidc.init_app(app)
 
     @app.context_processor
+    def inject_userinfo():
+        info = oidc.user_getinfo(['name'])
+        return {'username': info['name']}
+
+    @app.context_processor
     def inject_now():
         return {'now': datetime.now()}
 
