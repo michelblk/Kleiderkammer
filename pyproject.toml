@@ -8,7 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 Flask = "^2.2.2"
-flask-oidc = {git = "https://github.com/puiterwijk/flask-oidc.git", rev = "refs/pull/144/head"}
+flask-oidc = { git = "https://github.com/puiterwijk/flask-oidc.git", rev = "refs/pull/144/head" }
 PyJWT = "^2.4.0"
 uWSGI = "^2.0.20"
 

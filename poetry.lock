@@ -38,7 +38,7 @@ dotenv = ["python-dotenv"]
 [[package]]
 name = "flask-oidc"
 version = "1.4.0"
-description = ""
+description = "OpenID Connect extension for Flask"
 category = "main"
 optional = false
 python-versions = "*"
