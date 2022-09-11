@@ -1,11 +1,13 @@
 from datetime import datetime
 
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
 from kleiderkammer.einstellungen.api import api as einstellungen_api
 from kleiderkammer.einstellungen.views import einstellungen
 from kleiderkammer.kleidung.views import kleidung
 from kleiderkammer.mitglieder.views import mitglieder
+from kleiderkammer.util import db
 from kleiderkammer.util.oidc import oidc
 
 
@@ -21,6 +23,9 @@ def create_app():
 
     # initialize oidc client
     oidc.init_app(app)
+
+    # initialize database
+    db.init_app(app)
 
     @app.context_processor
     def inject_userinfo():

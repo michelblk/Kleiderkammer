@@ -3,5 +3,26 @@
 {% block title %}Kleidung{% endblock %}
 
 {% block content %}
-    Inhalt: Kleidung
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Code</th>
+                <th scope="col">Kategorie</th>
+                <th scope="col">Hersteller</th>
+                <th scope="col">Modell</th>
+                <th scope="col">Gr&ouml;&szlig;e</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows -%}
+                <tr data-id="{{ row.id }}" data-typ="{{ row.typ.id }}" data-kategorie-id="{{ row.typ.kategorie.id }}">
+                    <th scope="row">{{ row.code }}</th>
+                    <td>{{ row.typ.kategorie.name }}</td>
+                    <td>{{ row.typ.hersteller }}</td>
+                    <td>{{ row.typ.modell }}</td>
+                    <td>{{ row.groesse }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

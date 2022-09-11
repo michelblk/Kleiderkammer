@@ -17,6 +17,7 @@ ENV PIP_DEFAULT_TIMEOUT=100 \
 RUN pip install "poetry==$POETRY_VERSION"
 RUN python -m venv /venv
 
+RUN apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main mariadb-connector-c-dev==3.2.7-r1
 COPY pyproject.toml poetry.lock ./
 RUN . /venv/bin/activate && poetry install --only main
 
