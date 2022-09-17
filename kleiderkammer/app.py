@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 
 from kleiderkammer.einstellungen.api import api as einstellungen_api
 from kleiderkammer.einstellungen.views import einstellungen
@@ -12,6 +11,8 @@ from kleiderkammer.util.oidc import oidc
 
 
 def create_app():
+    print("Starting...")
+
     app = Flask(__name__)
     app.config.from_pyfile('config.py')
 
