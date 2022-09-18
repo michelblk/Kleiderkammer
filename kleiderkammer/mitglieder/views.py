@@ -14,4 +14,10 @@ def index():
         .order_by(Mitglied.nachname, Mitglied.vorname) \
         .all()
 
-    return render_template("mitglieder.html", rows=rows)
+    return render_template("html/mitglieder.html", rows=rows)
+
+
+@mitglieder.route("/hinzufuegen", methods=["GET"])
+@oidc.require_login
+def hinzufuegen():
+    return render_template("html/mitglied-hinzufuegen.html", access_token=oidc.get_access_token())  #FIXME

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Mitglieder{% endblock %}
+
+{% block content %}
+    <div class="mt-1">
+        <a class="btn btn-dark btn-sm float-end" href="{{ url_for("mitglieder.hinzufuegen") }}">
+            Hinzuf&uuml;gen
+        </a>
+    </div>
+    <div class="mt-1">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Nachname</th>
+                    <th scope="col">Vorname</th>
+                    <th scope="col">Kleidungsst&uuml;cke</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                    <tr data-id="{{ row.id }}">
+                        <td>{{ row.nachname }}</td>
+                        <td>{{ row.vorname }}</td>
+                        <td>tbd</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

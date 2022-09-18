@@ -5,6 +5,7 @@ from flask import Flask
 from kleiderkammer.einstellungen.api import api as einstellungen_api
 from kleiderkammer.einstellungen.views import einstellungen
 from kleiderkammer.kleidung.views import kleidung
+from kleiderkammer.mitglieder.api import api as mitglieder_api
 from kleiderkammer.mitglieder.views import mitglieder
 from kleiderkammer.util import db
 from kleiderkammer.util.oidc import oidc
@@ -19,6 +20,7 @@ def create_app():
     # register blueprints
     app.register_blueprint(kleidung, url_prefix='/kleidung')
     app.register_blueprint(mitglieder, url_prefix='/mitglieder')
+    app.register_blueprint(mitglieder_api, url_prefix='/api/mitglieder')
     app.register_blueprint(einstellungen, url_prefix='/einstellungen')
     app.register_blueprint(einstellungen_api, url_prefix='/api/einstellungen')
 

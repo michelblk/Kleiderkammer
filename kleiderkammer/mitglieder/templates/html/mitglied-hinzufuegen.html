@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Mitglied hinzuf&uuml;gen{% endblock %}
+
+{% block content %}
+    <div class="mt-1">
+        <a class="btn btn-dark btn-sm float-end" href="{{ url_for("mitglieder.index") }}">
+            Zur&uuml;ck
+        </a>
+    </div>
+    <div class="mt-1">
+        <form id="form">
+            <div class="mb-3">
+                <label for="vorname" class="form-label">Vorname</label>
+                <input type="text" class="form-control" id="vorname" name="vorname">
+            </div>
+            <div class="mb-3">
+                <label for="nachname" class="form-label">Nachname</label>
+                <input type="text" class="form-control" id="nachname" name="nachname">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script>
+        {% include 'js/mitglied-hinzufuegen.js' %}
+    </script>
+{% endblock %}

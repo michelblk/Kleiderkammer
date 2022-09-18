@@ -2,7 +2,7 @@ from flask import Blueprint
 
 from kleiderkammer.util.oidc import oidc
 
-api = Blueprint('einstellungen-api', __name__)
+api = Blueprint('einstellungen_api', __name__)
 
 
 @api.route('/', methods=['GET'])
