@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import Flask
+from flask import Flask, redirect
 
 from kleiderkammer.einstellungen.api import api as einstellungen_api
 from kleiderkammer.einstellungen.views import einstellungen
@@ -38,6 +38,11 @@ def create_app():
     @app.context_processor
     def inject_now():
         return {'now': datetime.now()}
+
+    @oidc.require_login
+    @app.route("/")
+    def index():
+        return redirect(app.url_for('kleidung.index'))
 
     return app
 
