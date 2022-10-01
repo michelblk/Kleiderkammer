@@ -8,7 +8,7 @@ api = Blueprint('mitglieder_api', __name__)
 
 
 @api.route("/add", methods=["POST"])
-@oidc.accept_token(True)
+@oidc.require_login
 def hinzufuegen():
     data = request.form
     if data["nachname"] and data["vorname"]:

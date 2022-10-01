@@ -7,9 +7,6 @@ $(function () {
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             data: $("#form").serialize(),
             method: 'POST',
-            headers: {
-                Authorization: "Bearer {{ access_token }}"
-            },
             success: function () {
                 location.href = "{{ url_for('mitglieder.index') }}";
             },
