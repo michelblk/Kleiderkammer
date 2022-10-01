@@ -4,6 +4,7 @@ from flask import Flask, redirect
 
 from kleiderkammer.einstellungen.api import api as einstellungen_api
 from kleiderkammer.einstellungen.views import einstellungen
+from kleiderkammer.kleidung.api import api as kleidung_api
 from kleiderkammer.kleidung.views import kleidung
 from kleiderkammer.mitglieder.api import api as mitglieder_api
 from kleiderkammer.mitglieder.views import mitglieder
@@ -19,6 +20,7 @@ def create_app():
 
     # register blueprints
     app.register_blueprint(kleidung, url_prefix='/kleidung')
+    app.register_blueprint(kleidung_api, url_prefix='/api/kleidung')
     app.register_blueprint(mitglieder, url_prefix='/mitglieder')
     app.register_blueprint(mitglieder_api, url_prefix='/api/mitglieder')
     app.register_blueprint(einstellungen, url_prefix='/einstellungen')
