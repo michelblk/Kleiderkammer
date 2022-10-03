@@ -8,4 +8,4 @@ OIDC_OPENID_REALM = 'http://localhost:5000/oidc_callback'
 OIDC_SCOPES = ['openid', 'email', 'profile']
 OIDC_COOKIE_SECURE = False
 
-SQLALCHEMY_DATABASE_URI = 'mysql://root:mariadb@127.0.0.1:3306/kleiderkammer'
+SQLALCHEMY_DATABASE_URI = 'mysql://root:mariadb@db:3306/kleiderkammer'

@@ -2,11 +2,12 @@ version: '3.9'
 services:
   db:
     container_name: db
-    image: mariadb/server:latest
+    image: mariadb:latest
     expose:
       - 3306
     environment:
       MARIADB_ROOT_PASSWORD: mariadb
+      MARIADB_DATABASE: kleiderkammer
 
   flask:
     container_name: flask
