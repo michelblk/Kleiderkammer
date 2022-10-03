@@ -9,32 +9,54 @@
         </a>
     </div>
     <div class="mt-1">
-        <table class="table">
+        <table class="table table-striped">
             <thead>
                 <tr>
+                    {% macro table_header(title, column, data) %}
+                        <th scope="col">
+                            <span class="dropdown-toggle text-decoration-none" data-bs-toggle="dropdown"
+                                  aria-expanded="false">
+                                {{ title }}
+                            </span>
+                            <ul class="dropdown-menu">
+                                {% for item in data %}
+                                    <li>
+                                        <input class="form-check-input filter" type="checkbox" value="{{ item }}"
+                                               data-column="{{ column }}" />
+                                        <label class="form-check-label">{{ item }}</label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </th>
+                    {% endmacro %}
+
                     <th scope="col">Code</th>
-                    <th scope="col">Kategorie</th>
-                    <th scope="col">Hersteller</th>
-                    <th scope="col">Modell</th>
-                    <th scope="col">Gr&ouml;&szlig;e</th>
-                    <th scope="col">Jahr</th>
-                    <th scope="col">W&auml;schen</th>
+                    {{ table_header('Kategorie', 'kategorie', kategorien) }}
+                    {{ table_header('Hersteller', 'hersteller', hersteller) }}
+                    {{ table_header('Modell', 'modell', modelle) }}
+                    {{ table_header('Gr\xF6\xDFe', 'groesse', groessen) }}
+                    {{ table_header('Jahr', 'jahr', jahre) }}
+                    {{ table_header('W\xE4schen', 'waeschen', waeschen) }}
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="kleidungstabelle">
                 {% for row in rows -%}
                     <tr data-id="{{ row.id }}" data-typ="{{ row.typ.id }}"
                         data-kategorie-id="{{ row.typ.kategorie.id }}">
                         <th scope="row">{{ row.code }}</th>
-                        <td>{{ row.typ.kategorie.name }}</td>
-                        <td>{{ row.typ.hersteller }}</td>
-                        <td>{{ row.typ.modell }}</td>
-                        <td>{{ row.groesse }}</td>
-                        <td>{{ row.anschaffungsjahr }}</td>
+                        <td data-column="kategorie">{{ row.typ.kategorie.name }}</td>
+                        <td data-column="hersteller">{{ row.typ.hersteller }}</td>
+                        <td data-column="modell">{{ row.typ.modell }}</td>
+                        <td data-column="groesse">{{ row.groesse }}</td>
+                        <td data-column="jahr">{{ row.anschaffungsjahr }}</td>
                         <td>tbd</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <script>
+        {% include 'js/kleidung.js' %}
+    </script>
 {% endblock %}
