@@ -7,17 +7,9 @@ services:
       - 3306
     environment:
       MARIADB_RANDOM_ROOT_PASSWORD: "yes"
-      MARIADB_MYSQL_LOCALHOST_USER: "yes"
       MARIADB_USER: "kleiderkammer"
       MARIADB_PASSWORD: "kleiderkammer"
       MARIADB_DATABASE: "kleiderkammer"
-    #    healthcheck:
-    #      test: [ "CMD", "/usr/local/bin/healthcheck.sh", "--su-mysql", "--connect" ]
-    #      interval: 5s
-    #      timeout: 1s
-    #      retries: 2
-    volumes:
-      - database:/var/lib/mysql
 
   flask:
     container_name: flask
@@ -25,18 +17,17 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
-
     environment:
       FLASK_SECRET_KEY: "SomethingNotEntirelySecret"
       FLASK_TESTING: "True"
       FLASK_DEBUG: "True"
-      FLASK_OIDC_CLIENT_SECRETS__web__client_id: "studium-webtechnologie-seminararbeit"
-      FLASK_OIDC_CLIENT_SECRETS__web__client_secret: "RGACtgB7096PJa0zWw7P1RTZyDIu7shB"
-      FLASK_OIDC_CLIENT_SECRETS__web__auth_uri: "https://idp.michelblank.de/auth/realms/BlankIDP/protocol/openid-connect/auth"
-      FLASK_OIDC_CLIENT_SECRETS__web__token_uri: "https://idp.michelblank.de/auth/realms/BlankIDP/protocol/openid-connect/token"
-      FLASK_OIDC_CLIENT_SECRETS__web__issuer: "https://idp.michelblank.de/auth/realms/BlankIDP"
-      FLASK_OIDC_CLIENT_SECRETS__web__userinfo_uri: "https://idp.michelblank.de/auth/realms/BlankIDP/protocol/openid-connect/userinfo"
-      FLASK_OIDC_CLIENT_SECRETS__web__token_introspection_uri: "https://idp.michelblank.de/auth/realms/BlankIDP/protocol/openid-connect/token/introspect"
+      FLASK_OIDC_CLIENT_SECRETS__WEB__CLIENT_ID: "studium-webtechnologie-seminararbeit"
+      FLASK_OIDC_CLIENT_SECRETS__WEB__CLIENT_SECRET: "..."
+      FLASK_OIDC_CLIENT_SECRETS__WEB__AUTH_URI: "https://idp.michelblank.de/auth/realms/BlankIDP/protocol/openid-connect/auth"
+      FLASK_OIDC_CLIENT_SECRETS__WEB__TOKEN_URI: "https://idp.michelblank.de/auth/realms/BlankIDP/protocol/openid-connect/token"
+      FLASK_OIDC_CLIENT_SECRETS__WEB__ISSUER: "https://idp.michelblank.de/auth/realms/BlankIDP"
+      FLASK_OIDC_CLIENT_SECRETS__WEB__USERINFO_URI: "https://idp.michelblank.de/auth/realms/BlankIDP/protocol/openid-connect/userinfo"
+      FLASK_OIDC_CLIENT_SECRETS__WEB__TOKEN_INTROSPECTION_URI: "https://idp.michelblank.de/auth/realms/BlankIDP/protocol/openid-connect/token/introspect"
       FLASK_OIDC_ID_TOKEN_COOKIE_SECURE: "False"
       FLASK_OIDC_REQUIRE_VERIFIED_EMAIL: "False"
       FLASK_OIDC_OPENID_REALM: "http://localhost:5000/oidc_callback"
@@ -46,9 +37,8 @@ services:
       FLASK_SQLALCHEMY_TRACK_MODIFICATIONS: "False"
     expose:
       - 5000
-    #   depends_on:
-    #     db:
-    #       condition: service_healthy
+    depends_on:
+      - db
     links:
       - db
     restart: unless-stopped
