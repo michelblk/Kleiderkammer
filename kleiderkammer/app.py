@@ -14,7 +14,7 @@ from kleiderkammer.util.oidc import oidc
 print("Starting...")
 
 app = Flask(__name__)
-app.config.from_pyfile('config.py')
+app.config.from_prefixed_env()
 
 # register blueprints
 app.register_blueprint(kleidung, url_prefix='/kleidung')
@@ -24,7 +24,7 @@ app.register_blueprint(mitglieder_api, url_prefix='/api/mitglieder')
 app.register_blueprint(einstellungen, url_prefix='/einstellungen')
 app.register_blueprint(einstellungen_api, url_prefix='/api/einstellungen')
 
-# initialize oidc client
+# initialize oidc
 oidc.init_app(app)
 
 # initialize database

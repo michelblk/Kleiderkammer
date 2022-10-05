@@ -1,4 +1,4 @@
-FROM python:3.10-alpine as base
+FROM python:3.10-alpine@sha256:f34ed96bfd9f329f89ce3977373cef37ce5d0a4ba8c5ed4aebca785d649b9082 as base
 
 ENV PYTHONFAULTHANDLER=1 \
     PYTHONHASHSEED=random \
