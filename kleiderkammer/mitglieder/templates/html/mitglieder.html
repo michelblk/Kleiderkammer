@@ -20,8 +20,8 @@
             <tbody>
                 {% for row in rows %}
                     <tr class="mitglied" data-id="{{ row.id }}">
-                        <td>{{ row.nachname }}</td>
-                        <td>{{ row.vorname }}</td>
+                        <td data-column="nachname">{{ row.nachname }}</td>
+                        <td data-column="vorname">{{ row.vorname }}</td>
                         <td>tbd</td>
                     </tr>
                 {% endfor %}
@@ -32,6 +32,7 @@
     <div id="mitglied-details"></div>
     <script id="mitglied-details-template" type="text/x-handlebars-template">
         {% include 'html/mitglied-details.html' %}
+
     </script>
 
     <script>

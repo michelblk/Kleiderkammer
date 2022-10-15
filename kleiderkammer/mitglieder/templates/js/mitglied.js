@@ -1,14 +1,23 @@
+'use strict';
+
 $(function () {
 
     const templateObj = $("#mitglied-details-template");
     const template = Handlebars.compile(templateObj.html());
     $(".mitglied").click(function () {
-        const mitgliedId = $(this).parent('tr').data('id'); // TODO fix
+        const mitgliedId = $(this).data('id');
+        const vorname = $(this).find("[data-column='vorname']").text();
+        const nachname = $(this).find("[data-column='nachname']").text();
 
         const target_object = $("#mitglied-details");
-        target_object.data('id', mitgliedId);
+        target_object.attr('data-id', mitgliedId);
         target_object.html(template({
-            title: 'test'
+            title: `${nachname}, ${vorname}`,
+            nachname: nachname,
+            vorname: vorname
         }));
+
+        const modal = new bootstrap.Modal(target_object.find(".modal"));
+        modal.show();
     });
 });
