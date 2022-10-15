@@ -37,4 +37,5 @@ RUN . /venv/bin/activate && pip install *.whl
 
 RUN apk del .build-deps
 
+USER nobody
 ENTRYPOINT ["/venv/bin/uwsgi", "wsgi.ini"]
