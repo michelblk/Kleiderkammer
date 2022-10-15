@@ -1,3 +1,5 @@
+'use strict';
+
 function getActiveFiltersForColumn(column) {
     return $(`.filter[data-column='${column}']:checked`).map(function () {
         return $(this).val();
@@ -29,5 +31,22 @@ $(function () {
                 && filter('jahr', row, jahrFilter)
             );
         });
+    });
+
+    const templateObj = $("#kleidung-details-template");
+    const template = Handlebars.compile(templateObj.html());
+    $(".kleidung").click(function () {
+        const id = $(this).data('id');
+        const code = $(this).find('[data-column="code"]').text();
+        const kategorie = $(this).find('[data-column="kategorie"]').text();
+
+        const target_object = $("#kleidung-details");
+        target_object.attr('data-id', id);
+        target_object.html(template({
+            title: `${kategorie} ${code}`
+        }));
+
+        const modal = new bootstrap.Modal(target_object.find(".modal"));
+        modal.show();
     });
 });

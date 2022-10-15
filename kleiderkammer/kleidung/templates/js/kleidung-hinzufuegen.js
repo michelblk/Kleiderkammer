@@ -1,3 +1,5 @@
+'use strict';
+
 $(function () {
     $("#modell").change(function () {
         var input = $("#modell")[0];
