@@ -1,26 +1,16 @@
+from datetime import datetime
+
 from flask import Blueprint, Response, request
 from sqlalchemy.exc import NoResultFound
 
 from kleiderkammer.kleidung.model.kleidung import Kleidung
 from kleiderkammer.kleidung.model.kleidungskategorie import Kleidungskategorie
 from kleiderkammer.kleidung.model.kleidungstyp import Kleidungstyp
+from kleiderkammer.kleidung.model.kleidungswaesche import Kleidungswaesche
 from kleiderkammer.util.db import db
 from kleiderkammer.util.oidc import oidc
 
 api = Blueprint('kleidung_api', __name__)
-
-
-@api.route('/typen', methods=["GET"])
-@oidc.require_login
-def typen():
-    rows = Kleidungstyp.query \
-        .all()
-
-    return [{
-        "hersteller": row.hersteller,
-        "modell": row.modell,
-        "kategorie": row.kategorie.name
-    } for row in rows]
 
 
 @api.route("/hinzufuegen", methods=["POST"])
@@ -76,3 +66,32 @@ def hinzufuegen():
         db.session.commit()
 
     return Response(status=201)
+
+
+@api.route("/toggle_waesche", methods=["POST"])
+@oidc.require_login
+def toggle_waesche():
+    data = request.form
+    kleidung_id = data["kleidung_id"]
+    action = data["action"]
+
+    waesche = Kleidungswaesche.query \
+        .filter_by(kleidung_id=kleidung_id, bis=None) \
+        .scalar()
+
+    erfolg = False
+    if action == "abgeben" and not waesche:
+        waesche = Kleidungswaesche()
+        waesche.kleidung_id = kleidung_id
+        waesche.von = datetime.now()
+        erfolg = True
+    elif action == "erhalten" and waesche:
+        waesche.bis = datetime.now()
+        erfolg = True
+
+    if erfolg:
+        db.session.add(waesche)
+        db.session.commit()
+        return Response(status=201)
+
+    return Response(status=400)
