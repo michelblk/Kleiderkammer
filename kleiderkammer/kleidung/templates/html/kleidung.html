@@ -41,15 +41,15 @@
             </thead>
             <tbody id="kleidungstabelle">
                 {% for row in rows -%}
-                    <tr class="kleidung" data-id="{{ row.id }}" data-typ="{{ row.typ.id }}"
-                        data-kategorie-id="{{ row.typ.kategorie.id }}">
+                    <tr class="kleidung" data-id="{{ row.id }}" data-typ="{{ row.typ_id }}"
+                        data-kategorie-id="{{ row.kategorie_id }}">
                         <th scope="row" data-column="code">{{ row.code }}</th>
-                        <td data-column="kategorie">{{ row.typ.kategorie.name }}</td>
-                        <td data-column="hersteller">{{ row.typ.hersteller }}</td>
-                        <td data-column="modell">{{ row.typ.modell }}</td>
+                        <td data-column="kategorie">{{ row.kategorie_name }}</td>
+                        <td data-column="hersteller">{{ row.typ_hersteller }}</td>
+                        <td data-column="modell">{{ row.typ_modell }}</td>
                         <td data-column="groesse">{{ row.groesse }}</td>
                         <td data-column="jahr">{{ row.anschaffungsjahr }}</td>
-                        <td>tbd</td>
+                        <td>{{ row.waeschen }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

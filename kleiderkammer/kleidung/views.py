@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template
+from sqlalchemy.sql.functions import coalesce, count
 
 from kleiderkammer.kleidung.model.kleidung import Kleidung
 from kleiderkammer.kleidung.model.kleidungskategorie import Kleidungskategorie
 from kleiderkammer.kleidung.model.kleidungstyp import Kleidungstyp
+from kleiderkammer.kleidung.model.kleidungswaesche import Kleidungswaesche
 from kleiderkammer.util.oidc import oidc
 
 kleidung = Blueprint('kleidung', __name__, template_folder="templates")
@@ -13,6 +15,22 @@ kleidung = Blueprint('kleidung', __name__, template_folder="templates")
 def index():
     rows = Kleidung.query \
         .filter_by(archiviert=False) \
+        .join(Kleidungswaesche, Kleidung.id == Kleidungswaesche.kleidung_id, isouter=True) \
+        .join(Kleidungstyp, Kleidung.typ_id == Kleidungstyp.id, isouter=True) \
+        .join(Kleidungskategorie, Kleidungstyp.kategorie_id == Kleidungskategorie.id, isouter=True) \
+        .with_entities(
+            Kleidung.id,
+            Kleidung.typ_id,
+            Kleidungskategorie.id.label("kategorie_id"),
+            Kleidung.code,
+            Kleidungskategorie.name.label("kategorie_name"),
+            Kleidungstyp.hersteller.label("typ_hersteller"),
+            Kleidungstyp.modell.label("typ_modell"),
+            Kleidung.groesse,
+            Kleidung.anschaffungsjahr,
+            coalesce(count(Kleidungswaesche.kleidung_id), 0).label("waeschen")
+        ) \
+        .group_by(Kleidung) \
         .order_by(Kleidung.code) \
         .all()
 
