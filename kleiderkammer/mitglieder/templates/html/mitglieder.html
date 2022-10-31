@@ -22,7 +22,7 @@
                     <tr class="mitglied" data-id="{{ row.id }}">
                         <td data-column="nachname">{{ row.nachname }}</td>
                         <td data-column="vorname">{{ row.vorname }}</td>
-                        <td>{{ len(row.ausgeliehene_kleidung) }}</td>
+                        <td>{{ row.ausgeliehene_kleidung_count }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -32,6 +32,7 @@
     <div id="mitglied-details"></div>
     <script id="mitglied-details-template" type="text/x-handlebars-template">
         {% include 'html/mitglied-details.html' %}
+
 
     </script>
 
