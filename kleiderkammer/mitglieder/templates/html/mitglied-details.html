@@ -1,28 +1,47 @@
 {% raw %}
-<div class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{ title }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <table class="w-100">
-                    <tbody>
-                        <tr>
-                            <th scope="row">Nachname</th>
-                            <td>{{ nachname }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Vorname</th>
-                            <td>{{ vorname }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
+<script id="mitglied-details-template" type="text/x-handlebars-template">
+    <div class="modal" tabindex="-1" data-mitglied-id="{{ mitgliedId }}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ title }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>Aktuelle Kleidungsstücke</h6>
+                    <table id="aktuelle-kleidung-table" class="w-100">
+                        <thead>
+                            <tr>
+                                <th scope="col">Code</th>
+                                <th scope="col">Modell</th>
+                                <th scope="col">Gr&ouml;&szlig;e</th>
+                                <th scope="col">Seit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                </div>
             </div>
         </div>
     </div>
-</div>
+</script>
+
+<script id="aktuelle-kleidung-row-template" type="text/x-handlebars-template">
+    {{#each this}}
+        <tr data-kleidung-id="{{ id }}">
+            <td>{{ code }}</td>
+            <td>{{ modell }}</td>
+            <td>{{ groesse }}</td>
+            <td>{{ von }}</td>
+        </tr>
+    {{/each}}
+</script>
+
 {% endraw %}
+
+<script>
+    {% include 'js/mitglied-details.js' %}
+</script>

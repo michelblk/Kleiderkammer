@@ -5,6 +5,7 @@ from sqlalchemy.exc import NoResultFound
 
 from kleiderkammer.kleidung.model.kleidung import Kleidung
 from kleiderkammer.kleidung.model.kleidungskategorie import Kleidungskategorie
+from kleiderkammer.kleidung.model.kleidungsleihe import Kleidungsleihe
 from kleiderkammer.kleidung.model.kleidungstyp import Kleidungstyp
 from kleiderkammer.kleidung.model.kleidungswaesche import Kleidungswaesche
 from kleiderkammer.util.db import db
@@ -95,3 +96,26 @@ def toggle_waesche():
         return Response(status=201)
 
     return Response(status=400)
+
+
+@api.route("/aktuelleKleidung", methods=["GET"])
+@oidc.require_login
+def aktuelle_kleidung():
+    mitglied_id = request.args["mitgliedId"]
+
+    aktuelle_kleidungsstuecke = Kleidung.query \
+        .with_entities(Kleidung.id, Kleidung.code, Kleidungstyp.modell, Kleidung.groesse, Kleidungsleihe.von) \
+        .join(Kleidungstyp, Kleidung.typ_id == Kleidungstyp.id) \
+        .join(Kleidungsleihe, Kleidung.id == Kleidungsleihe.kleidung_id and Kleidungsleihe.bis == None) \
+        .filter_by(mitglied_id=mitglied_id) \
+        .all()
+
+    response = [{
+        "id": kleidung.id,
+        "code": kleidung.code,
+        "modell": kleidung.modell,
+        "groesse": kleidung.groesse,
+        "von": kleidung.von
+    } for kleidung in aktuelle_kleidungsstuecke]
+
+    return response

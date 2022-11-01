@@ -10,11 +10,9 @@ $(function () {
         const nachname = $(this).find("[data-column='nachname']").text();
 
         const target_object = $("#mitglied-details");
-        target_object.attr('data-id', mitgliedId);
         target_object.html(template({
             title: `${nachname}, ${vorname}`,
-            nachname: nachname,
-            vorname: vorname
+            mitgliedId: mitgliedId
         }));
 
         const modal = new bootstrap.Modal(target_object.find(".modal"));
