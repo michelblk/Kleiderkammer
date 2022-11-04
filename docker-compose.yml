@@ -1,5 +1,19 @@
 version: '3.9'
 services:
+  sso:
+    # oidc provider for local development and testing only
+    image: quay.io/keycloak/keycloak@sha256:18ed0fbf70e80643ec205fda93c48492d7268e0873443bb46ddcce7a7638942d
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_IMPORT: /opt/keycloak/data/import/feuerwehr.json
+    volumes:
+      - ./sso/realms/feuerwehr.json:/opt/keycloak/data/import/feuerwehr.json:ro
+    ports:
+      - "8080:8080/tcp"
+    command:
+      - start-dev --import-realm
+
   db:
     container_name: db
     image: mariadb:latest
@@ -26,20 +40,22 @@ services:
       dockerfile: Dockerfile
       context: .
 
+    # username: MaxMustermann
+    # password: Passwort
     environment:
       FLASK_SECRET_KEY: "SomethingNotEntirelySecret"
       FLASK_TESTING: "True"
       FLASK_DEBUG: "True"
-      FLASK_OIDC_CLIENT_SECRETS__web__client_id: "studium-webtechnologie-seminararbeit"
-      FLASK_OIDC_CLIENT_SECRETS__web__client_secret: "..."
-      FLASK_OIDC_CLIENT_SECRETS__web__auth_uri: "https://idp.michelblank.de/auth/realms/BlankIDP/protocol/openid-connect/auth"
-      FLASK_OIDC_CLIENT_SECRETS__web__token_uri: "https://idp.michelblank.de/auth/realms/BlankIDP/protocol/openid-connect/token"
-      FLASK_OIDC_CLIENT_SECRETS__web__issuer: "https://idp.michelblank.de/auth/realms/BlankIDP"
-      FLASK_OIDC_CLIENT_SECRETS__web__userinfo_uri: "https://idp.michelblank.de/auth/realms/BlankIDP/protocol/openid-connect/userinfo"
-      FLASK_OIDC_CLIENT_SECRETS__web__token_introspection_uri: "https://idp.michelblank.de/auth/realms/BlankIDP/protocol/openid-connect/token/introspect"
+      FLASK_OIDC_CLIENT_SECRETS__web__client_id: "kleiderkammer"
+      FLASK_OIDC_CLIENT_SECRETS__web__client_secret: "8BF6S9szapT4ehHGD3aK7xtW8mLL8g8K"
+      FLASK_OIDC_CLIENT_SECRETS__web__auth_uri: "http://localhost:8080/realms/Feuerwehr/protocol/openid-connect/auth"
+      FLASK_OIDC_CLIENT_SECRETS__web__token_uri: "http://sso:8080/realms/Feuerwehr/protocol/openid-connect/token"
+      FLASK_OIDC_CLIENT_SECRETS__web__issuer: "http://localhost:8080/realms/Feuerwehr"
+      FLASK_OIDC_CLIENT_SECRETS__web__userinfo_uri: "http://sso:8080/realms/Feuerwehr/protocol/openid-connect/userinfo"
+      FLASK_OIDC_CLIENT_SECRETS__web__token_introspection_uri: "http://sso:8080/realms/Feuerwehr/protocol/openid-connect/token/introspect"
       FLASK_OIDC_ID_TOKEN_COOKIE_SECURE: "False"
       FLASK_OIDC_REQUIRE_VERIFIED_EMAIL: "False"
-      FLASK_OIDC_OPENID_REALM: "http://localhost:5000/oidc_callback"
+      FLASK_OIDC_OPENID_REALM: "http://localhost/oidc_callback"
       FLASK_OIDC_SCOPES: "openid"
       FLASK_OIDC_COOKIE_SECURE: "False"
       FLASK_SQLALCHEMY_DATABASE_URI: "mysql://kleiderkammer:kleiderkammer@db:3306/kleiderkammer"
@@ -51,6 +67,7 @@ services:
     #       condition: service_healthy
     links:
       - db
+      - sso
     restart: unless-stopped
 
   nginx:
