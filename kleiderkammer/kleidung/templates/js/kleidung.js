@@ -43,7 +43,8 @@ $(function () {
         const target_object = $("#kleidung-details");
         target_object.attr('data-id', id);
         target_object.html(template({
-            title: `${kategorie} ${code}`
+            title: `${kategorie} ${code}`,
+            kleidungId: id
         }));
 
         const modal = new bootstrap.Modal(target_object.find(".modal"));

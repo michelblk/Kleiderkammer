@@ -8,6 +8,7 @@ from kleiderkammer.kleidung.model.kleidungskategorie import Kleidungskategorie
 from kleiderkammer.kleidung.model.kleidungsleihe import Kleidungsleihe
 from kleiderkammer.kleidung.model.kleidungstyp import Kleidungstyp
 from kleiderkammer.kleidung.model.kleidungswaesche import Kleidungswaesche
+from kleiderkammer.mitglieder.model.mitglied import Mitglied
 from kleiderkammer.util.db import db
 from kleiderkammer.util.oidc import oidc
 
@@ -117,5 +118,37 @@ def aktuelle_kleidung():
         "groesse": kleidung.groesse,
         "von": kleidung.von
     } for kleidung in aktuelle_kleidungsstuecke]
+
+    return response
+
+
+@api.route("/status", methods=["GET"])
+@oidc.require_login
+def status():
+    kleidung_id = request.args["kleidungId"]
+
+    letzte_waesche = Kleidungswaesche.query \
+        .filter_by(kleidung_id=kleidung_id) \
+        .order_by(Kleidungswaesche.von) \
+        .one_or_none()
+
+    aktuelle_leihe = Kleidungsleihe.query \
+        .filter_by(kleidung_id=kleidung_id, bis=None) \
+        .join(Mitglied, Kleidungsleihe.mitglied_id == Mitglied.id, isouter=True) \
+        .with_entities(Kleidungsleihe.von, Mitglied.vorname, Mitglied.nachname) \
+        .order_by(Kleidungsleihe.von) \
+        .one_or_none()
+
+    response = {
+        "isInWaesche": letzte_waesche.bis is None if letzte_waesche else False,
+        "zuletztGewaschen": letzte_waesche.von if letzte_waesche else None,
+        "leihe": {
+            "mitglied": {
+                "vorname": aktuelle_leihe.vorname if aktuelle_leihe else None,
+                "nachname": aktuelle_leihe.nachname if aktuelle_leihe else None
+            } if aktuelle_leihe else None,
+            "seit": aktuelle_leihe.von if aktuelle_leihe else None
+        }
+    }
 
     return response
