@@ -4,11 +4,11 @@
         <base href="/">
         <meta charset="UTF-8">
         <title>{% block title %} {% endblock %} - Kleiderkammer</title>
-        <link rel="stylesheet" href="static/assets/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="static/assets/css/bootstrap-icons.css" />
-        <script defer src="static/assets/js/bootstrap.bundle.min.js"></script>
-        <script src="static/assets/js/jquery.min.js"></script>
-        <script src="static/assets/js/handlebars.min.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap-icons.css') }}" />
+        <script defer src="{{ url_for('static', filename='assets/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/js/handlebars.min.js') }}"></script>
         <style>
             {# Display the footer at the bottom of the screen or at the end of the page #}
             html, body {
