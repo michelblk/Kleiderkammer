@@ -1,11 +1,10 @@
+import flask_login
 from flask import Blueprint
-
-from kleiderkammer.util.oidc import oidc
 
 api = Blueprint('einstellungen_api', __name__)
 
 
 @api.route('/', methods=['GET'])
-@oidc.require_login
+@flask_login.login_required
 def get_all_einstellungen():
     return "passed"

@@ -1,5 +1,6 @@
 from datetime import datetime
 
+import flask_login
 from flask import Blueprint, Response, request
 from sqlalchemy.exc import NoResultFound
 
@@ -10,13 +11,12 @@ from kleiderkammer.kleidung.model.kleidungstyp import Kleidungstyp
 from kleiderkammer.kleidung.model.kleidungswaesche import Kleidungswaesche
 from kleiderkammer.mitglieder.model.mitglied import Mitglied
 from kleiderkammer.util.db import db
-from kleiderkammer.util.oidc import oidc
 
 api = Blueprint('kleidung_api', __name__)
 
 
 @api.route("/hinzufuegen", methods=["POST"])
-@oidc.require_login
+@flask_login.login_required
 def hinzufuegen():
     data = request.form
 
@@ -71,7 +71,7 @@ def hinzufuegen():
 
 
 @api.route("/toggle_waesche", methods=["POST"])
-@oidc.require_login
+@flask_login.login_required
 def toggle_waesche():
     data = request.form
     kleidung_id = data["kleidung_id"]
@@ -100,7 +100,7 @@ def toggle_waesche():
 
 
 @api.route("/aktuelleKleidung", methods=["GET"])
-@oidc.require_login
+@flask_login.login_required
 def aktuelle_kleidung():
     mitglied_id = request.args["mitgliedId"]
 
@@ -123,7 +123,7 @@ def aktuelle_kleidung():
 
 
 @api.route("/status", methods=["GET"])
-@oidc.require_login
+@flask_login.login_required
 def status():
     kleidung_id = request.args["kleidungId"]
 

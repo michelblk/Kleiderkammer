@@ -1,15 +1,15 @@
+import flask_login
 from flask import Blueprint, render_template
 from sqlalchemy.sql.functions import count, coalesce
 
 from kleiderkammer.kleidung.model.kleidungsleihe import Kleidungsleihe
 from kleiderkammer.mitglieder.model.mitglied import Mitglied
-from kleiderkammer.util.oidc import oidc
 
 mitglieder = Blueprint('mitglieder', __name__, template_folder="templates")
 
 
 @mitglieder.route("/")
-@oidc.require_login
+@flask_login.login_required
 def index():
     ausgeliehene_kleidung = Kleidungsleihe.query \
         .with_entities(Kleidungsleihe.mitglied_id, count(Kleidungsleihe.kleidung_id).label("count")) \
@@ -32,6 +32,6 @@ def index():
 
 
 @mitglieder.route("/hinzufuegen", methods=["GET"])
-@oidc.require_login
+@flask_login.login_required
 def hinzufuegen():
     return render_template("html/mitglied-hinzufuegen.html")

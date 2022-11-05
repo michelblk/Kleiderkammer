@@ -1,14 +1,14 @@
+import flask_login
 from flask import Blueprint, request, Response
 
 from kleiderkammer.mitglieder.model.mitglied import Mitglied
 from kleiderkammer.util.db import db
-from kleiderkammer.util.oidc import oidc
 
 api = Blueprint('mitglieder_api', __name__)
 
 
 @api.route("/add", methods=["POST"])
-@oidc.require_login
+@flask_login.login_required
 def hinzufuegen():
     data = request.form
     if data["nachname"] and data["vorname"]:

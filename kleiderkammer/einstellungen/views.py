@@ -1,11 +1,10 @@
+import flask_login
 from flask import Blueprint, render_template
-
-from kleiderkammer.util.oidc import oidc
 
 einstellungen = Blueprint('einstellungen', __name__, template_folder="templates")
 
 
 @einstellungen.route("/")
-@oidc.require_login
+@flask_login.login_required
 def index():
     return render_template("einstellungen.html")

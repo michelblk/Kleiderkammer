@@ -1,38 +1,5 @@
 version: '3.9'
 services:
-  sso:
-    # oidc provider for local development and testing only
-    image: quay.io/keycloak/keycloak@sha256:18ed0fbf70e80643ec205fda93c48492d7268e0873443bb46ddcce7a7638942d
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-      KEYCLOAK_IMPORT: /opt/keycloak/data/import/feuerwehr.json
-    volumes:
-      - ./sso/realms/feuerwehr.json:/opt/keycloak/data/import/feuerwehr.json:ro
-    ports:
-      - "8080:8080/tcp"
-    command:
-      - start-dev --import-realm
-
-  db:
-    container_name: db
-    image: mariadb:latest
-    expose:
-      - 3306
-    environment:
-      MARIADB_RANDOM_ROOT_PASSWORD: "yes"
-      MARIADB_MYSQL_LOCALHOST_USER: "yes"
-      MARIADB_USER: "kleiderkammer"
-      MARIADB_PASSWORD: "kleiderkammer"
-      MARIADB_DATABASE: "kleiderkammer"
-    #    healthcheck:
-    #      test: [ "CMD", "/usr/local/bin/healthcheck.sh", "--su-mysql", "--connect" ]
-    #      interval: 5s
-    #      timeout: 1s
-    #      retries: 2
-    volumes:
-      - database:/var/lib/mysql
-
   flask:
     container_name: flask
     image: michelblank/kleiderkammer:latest
@@ -44,30 +11,10 @@ services:
     # password: Passwort
     environment:
       FLASK_SECRET_KEY: "SomethingNotEntirelySecret"
-      FLASK_TESTING: "True"
-      FLASK_DEBUG: "True"
-      FLASK_OIDC_CLIENT_SECRETS__web__client_id: "kleiderkammer"
-      FLASK_OIDC_CLIENT_SECRETS__web__client_secret: "8BF6S9szapT4ehHGD3aK7xtW8mLL8g8K"
-      FLASK_OIDC_CLIENT_SECRETS__web__auth_uri: "http://localhost:8080/realms/Feuerwehr/protocol/openid-connect/auth"
-      FLASK_OIDC_CLIENT_SECRETS__web__token_uri: "http://sso:8080/realms/Feuerwehr/protocol/openid-connect/token"
-      FLASK_OIDC_CLIENT_SECRETS__web__issuer: "http://localhost:8080/realms/Feuerwehr"
-      FLASK_OIDC_CLIENT_SECRETS__web__userinfo_uri: "http://sso:8080/realms/Feuerwehr/protocol/openid-connect/userinfo"
-      FLASK_OIDC_CLIENT_SECRETS__web__token_introspection_uri: "http://sso:8080/realms/Feuerwehr/protocol/openid-connect/token/introspect"
-      FLASK_OIDC_ID_TOKEN_COOKIE_SECURE: "False"
-      FLASK_OIDC_REQUIRE_VERIFIED_EMAIL: "False"
-      FLASK_OIDC_OPENID_REALM: "http://localhost/oidc_callback"
-      FLASK_OIDC_SCOPES: "openid"
-      FLASK_OIDC_COOKIE_SECURE: "False"
-      FLASK_SQLALCHEMY_DATABASE_URI: "mysql://kleiderkammer:kleiderkammer@db:3306/kleiderkammer"
+      FLASK_SQLALCHEMY_DATABASE_URI: "sqlite:///database.sqlite"
       FLASK_SQLALCHEMY_TRACK_MODIFICATIONS: "False"
     expose:
       - 5000
-    #   depends_on:
-    #     db:
-    #       condition: service_healthy
-    links:
-      - db
-      - sso
     restart: unless-stopped
 
   nginx:
