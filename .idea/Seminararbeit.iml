@@ -19,6 +19,7 @@
         <option value="$MODULE_DIR$/kleiderkammer/kleidung/templates" />
         <option value="$MODULE_DIR$/kleiderkammer/mitglieder/templates" />
         <option value="$MODULE_DIR$/kleiderkammer/templates" />
+        <option value="$MODULE_DIR$/kleiderkammer/login/templates/html" />
       </list>
     </option>
   </component>
