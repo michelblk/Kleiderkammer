@@ -11,6 +11,8 @@ Flask = "^2.2.2"
 Flask-SQLAlchemy = "^2.5.1"
 Flask-Login = "^0.6.2"
 Werkzeug = "^2.2.2"
+flask-session = "^0.4.0"
+python-dotenv = "^0.21.0"
 
 [tool.poetry.group.prod]
 optional = true

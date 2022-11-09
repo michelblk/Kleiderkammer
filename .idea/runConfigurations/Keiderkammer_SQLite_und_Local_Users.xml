@@ -6,13 +6,6 @@
     <option name="targetType" value="PATH" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
-    <envs>
-      <env name="FLASK_DEBUG" value="True" />
-      <env name="FLASK_SECRET_KEY" value="SomethingNotEntirelySecret" />
-      <env name="FLASK_SQLALCHEMY_DATABASE_URI" value="sqlite:///database.sqlite" />
-      <env name="FLASK_SQLALCHEMY_TRACK_MODIFICATIONS" value="False" />
-      <env name="FLASK_TESTING" value="True" />
-    </envs>
     <option name="SDK_HOME" value="" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <option name="IS_MODULE_SDK" value="true" />

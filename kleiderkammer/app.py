@@ -2,6 +2,7 @@ from datetime import datetime
 
 import flask_login
 from flask import Flask, redirect, session
+from flask_session import Session
 
 from kleiderkammer.einstellungen.api import api as einstellungen_api
 from kleiderkammer.einstellungen.views import einstellungen
@@ -29,6 +30,10 @@ app.register_blueprint(einstellungen_api, url_prefix='/api/einstellungen')
 
 # initialize database
 db.init_app(app)
+
+# initialize session handling
+session_management = Session(app)
+session_management.app.session_interface.db.create_all()
 
 # initialize login
 login_manager = flask_login.LoginManager()
