@@ -2,12 +2,14 @@ from datetime import datetime
 
 import flask_login
 from flask import Flask, redirect, session
+from flask_login import current_user
 from flask_session import Session
 
 from kleiderkammer.einstellungen.api import api as einstellungen_api
 from kleiderkammer.einstellungen.views import einstellungen
 from kleiderkammer.kleidung.api import api as kleidung_api
 from kleiderkammer.kleidung.views import kleidung
+from kleiderkammer.login.api import api as login_api
 from kleiderkammer.login.model.User import User
 from kleiderkammer.login.views import login
 from kleiderkammer.mitglieder.api import api as mitglieder_api
@@ -21,6 +23,7 @@ app.config.from_prefixed_env()
 
 # register blueprints
 app.register_blueprint(login, url_prefix='/login')
+app.register_blueprint(login_api, url_prefix='/api/login')
 app.register_blueprint(kleidung, url_prefix='/kleidung')
 app.register_blueprint(kleidung_api, url_prefix='/api/kleidung')
 app.register_blueprint(mitglieder, url_prefix='/mitglieder')
@@ -59,6 +62,11 @@ def request_loader(request):
     return None
 
 
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    return redirect(app.url_for('login.index'))
+
+
 @app.context_processor
 def inject_userinfo():
     user = flask_login.current_user
@@ -72,7 +80,10 @@ def inject_now():
 
 @app.route("/")
 def index():
-    return redirect(app.url_for('login.index'))
+    if current_user.is_authenticated:
+        return redirect(app.url_for('kleidung.index'))
+    else:
+        return redirect(app.url_for('login.index'))
 
 
 if __name__ == '__main__':

@@ -12,11 +12,11 @@
                         <div class="card-body">
                             <h3>Anmelden</h3>
 
-                            <form action="{{ url_for("login.login_action") }}" method="POST">
+                            <form action="{{ url_for("login_api.login") }}" method="POST">
                                 <div class="mb-4">
                                     <label class="form-label" for="username-input">Benutzername</label>
                                     <input type="text" id="username-input" class="form-control" name="username"
-                                           placeholder="MaxMustermann">
+                                           placeholder="MaxMustermann" autofocus>
                                 </div>
 
                                 <div class="mb-4">
