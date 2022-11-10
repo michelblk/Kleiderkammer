@@ -5,7 +5,9 @@
             <a class="d-flex me-lg-auto align-items-center text-white text-decoration-none"
                href="{{ url_for('kleidung.index') }}">
                 <i class="bi-fire d-flex justify-content-center flex-column" style="font-size: 1.75rem;"></i>
-                <span class="ms-2">{{ username }}</span>
+                {% if username %}
+                    <span class="ms-2">{{ username }}</span>
+                {% endif %}
             </a>
 
             {# Navigation #}
