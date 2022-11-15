@@ -13,7 +13,8 @@ mitglieder = Blueprint('mitglieder', __name__, template_folder="templates")
 def index():
     ausgeliehene_kleidung = Kleidungsleihe.query \
         .with_entities(Kleidungsleihe.mitglied_id, count(Kleidungsleihe.kleidung_id).label("count")) \
-        .filter(Kleidungsleihe.bis == None) \
+        .filter_by(bis=None) \
+        .group_by(Kleidungsleihe.mitglied_id) \
         .subquery()
 
     rows = Mitglied.query \

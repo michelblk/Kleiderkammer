@@ -108,8 +108,8 @@ def aktuelle_kleidung():
     aktuelle_kleidungsstuecke = Kleidung.query \
         .with_entities(Kleidung.id, Kleidung.code, Kleidungstyp.modell, Kleidung.groesse, Kleidungsleihe.von) \
         .join(Kleidungstyp, Kleidung.typ_id == Kleidungstyp.id) \
-        .join(Kleidungsleihe, Kleidung.id == Kleidungsleihe.kleidung_id and Kleidungsleihe.bis == None) \
-        .filter_by(mitglied_id=mitglied_id) \
+        .join(Kleidungsleihe, Kleidung.id == Kleidungsleihe.kleidung_id) \
+        .filter_by(mitglied_id=mitglied_id, bis=None) \
         .all()
 
     response = [{
