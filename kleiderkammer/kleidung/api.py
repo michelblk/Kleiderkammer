@@ -2,6 +2,7 @@ from datetime import datetime
 
 import flask_login
 from flask import Blueprint, Response, request
+from sqlalchemy import func
 from sqlalchemy.exc import NoResultFound
 
 from kleiderkammer.kleidung.model.kleidung import Kleidung
@@ -129,8 +130,8 @@ def status():
 
     letzte_waesche = Kleidungswaesche.query \
         .filter_by(kleidung_id=kleidung_id) \
-        .order_by(Kleidungswaesche.von) \
-        .one_or_none()
+        .order_by(Kleidungswaesche.von.desc()) \
+        .first()
 
     aktuelle_leihe = Kleidungsleihe.query \
         .filter_by(kleidung_id=kleidung_id, bis=None) \
@@ -152,3 +153,37 @@ def status():
     }
 
     return response
+
+
+@api.route("/verleihen", methods=["POST"])
+@flask_login.login_required
+def verleihen():
+    mitglied_id = request.form["mitgliedId"]
+    kleidung_id = request.form["kleidungId"]
+
+    leihe = Kleidungsleihe()
+    leihe.von = func.now()
+    leihe.kleidung_id = kleidung_id
+    leihe.mitglied_id = mitglied_id
+
+    db.session.add(leihe)
+    db.session.commit()
+
+    return Response(status=201)
+
+
+@api.route("/verleihen", methods=["DELETE"])
+@flask_login.login_required
+def zuruecknehmen():
+    kleidung_id = request.form["kleidungId"]
+
+    leihe = Kleidungsleihe.query \
+        .filter_by(kleidung_id=kleidung_id, bis=None) \
+        .one()
+
+    leihe.bis = func.now()
+
+    db.session.add(leihe)
+    db.session.commit()
+
+    return Response(status=201)

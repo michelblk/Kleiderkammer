@@ -32,31 +32,32 @@
             </div>
         </div>
     </div>
+    <div id="mitglied-dialog-placeholder"></div>
 </script>
 
 <script id="kleidung-actions-template" type="text/x-handlebars-template">
-    <table>
+    <table class="w-100 table">
         <tr>
             <td>Standort</td>
             <td>
                 {{#if leihe.mitglied}}
-                    {{ leihe.mitglied.nachname }}, {{ leihe.mitglied.vorname }}
+                {{ leihe.mitglied.nachname }}, {{ leihe.mitglied.vorname }}
                 {{else}}
-                                                 <!-- TODO zwischen Inaktiv und Lager differenzieren -->
-                                                 Lager
+                <!-- TODO zwischen Inaktiv und Lager differenzieren -->
+                Lager
                 {{/if}}
             </td>
             <td>
                 {{#if leihe.mitglied}}
-                    <button type="button" class="btn btn-secondary btn-sm float-end verleihen-button"
-                            data-action="zuruecknehmen">
-                        Zur&uuml;cknehmen
-                    </button>
+                <button type="button" class="btn btn-secondary btn-sm float-end verleihen-button"
+                        data-action="zuruecknehmen">
+                    Zur&uuml;cknehmen
+                </button>
                 {{else}}
-                    <button type="button" class="btn btn-secondary btn-sm float-end verleihen-button"
-                            data-action="verleihen">
-                        Verleihen
-                    </button>
+                <button type="button" class="btn btn-secondary btn-sm float-end verleihen-button"
+                        data-action="verleihen">
+                    Verleihen
+                </button>
                 {{/if}}
             </td>
         </tr>
@@ -65,20 +66,61 @@
             <td>{{ zuletztGewaschen }}</td>
             <td>
                 {{#if isInWaesche}}
-                    <button type="button" class="btn btn-secondary btn-sm float-end waschen-button"
-                            data-action="erhalten">
-                        W&auml;sche erhalten
-                    </button>
+                <button type="button" class="btn btn-secondary btn-sm float-end waschen-button"
+                        data-action="erhalten">
+                    W&auml;sche erhalten
+                </button>
                 {{else}}
-                    <button type="button" class="btn btn-secondary btn-sm float-end waschen-button"
-                            data-action="abgeben">
-                        W&auml;sche abgeben
-                    </button>
+                <button type="button" class="btn btn-secondary btn-sm float-end waschen-button"
+                        data-action="abgeben">
+                    W&auml;sche abgeben
+                </button>
                 {{/if}}
             </td>
         </tr>
     </table>
 </script>
+
+<script id="mitglied-auswaehlen-template" type="text/x-handlebars-template">
+    <div class="modal" tabindex="-1" data-kleidung-id="{{ kleidungId }}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Mitglied ausw&auml;hlen</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="w-100 table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nachname</th>
+                                <th scope="col">Vorname</th>
+                                <th scope="col">Aktion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each mitglieder}}
+                            <tr>
+                                <td>{{ vorname }}</td>
+                                <td>{{ nachname }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-secondary mitglied-waehlen"
+                                            data-mitglied-id="{{ id }}">
+                                        Ausw&auml;hlen
+                                    </button>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
 {% endraw %}
 
 <script>
