@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 
 import flask_login
@@ -20,6 +21,9 @@ print("Starting...")
 
 app = Flask(__name__)
 app.config.from_prefixed_env()
+
+# configure logging
+logging.getLogger('werkzeug').disabled = True
 
 # register blueprints
 app.register_blueprint(login, url_prefix='/login')
