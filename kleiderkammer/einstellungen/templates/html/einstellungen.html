@@ -6,4 +6,7 @@
     <div>
         <a href="{{ url_for("login_api.logout") }}" class="btn btn-secondary">Logout</a>
     </div>
+
+    {% include 'html/kennwort-aendern.html' %}
+    {% include 'html/benutzer-erstellen.html' %}
 {% endblock %}

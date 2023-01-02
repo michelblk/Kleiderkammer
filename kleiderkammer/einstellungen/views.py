@@ -7,4 +7,4 @@ einstellungen = Blueprint('einstellungen', __name__, template_folder="templates"
 @einstellungen.route("/")
 @flask_login.login_required
 def index():
-    return render_template("einstellungen.html")
+    return render_template("html/einstellungen.html")

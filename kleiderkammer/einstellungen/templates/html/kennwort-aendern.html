@@ -1,0 +1,23 @@
+<div>
+    <form>
+        <div class="mb-3">
+            <label for="current-password" class="form-label">Aktuelles Kennwort</label>
+            <input type="password" class="form-control" id="current-password">
+        </div>
+
+        <div class="mb-3">
+            <label for="new-password" class="form-label">Neues Kennwort</label>
+            <input type="password" class="form-control" id="new-password">
+        </div>
+
+        <div class="mb-3">
+            <label for="new-password2" class="form-label">Wiederholdung</label>
+            <input type="password" class="form-control" id="new-password2">
+        </div>
+
+        <div type="submit" class="btn btn-secondary">Ändern</div>
+    </form>
+</div>
+<script>
+    {% include 'js/kennwort-aendern.js' %}
+</script>
