@@ -19,7 +19,11 @@ def login():
     if user and check_password_hash(user.password, password):
         flask_login.login_user(user)
         session["id"] = user.id
-        return redirect(url_for("index"))
+
+        if user.hasToChangePassword:
+            return redirect(url_for("einstellungen.index"))
+        else:
+            return redirect(url_for("index"))
     else:
         return redirect(url_for("login.index"))
 
