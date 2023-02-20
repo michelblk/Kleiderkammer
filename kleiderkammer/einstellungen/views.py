@@ -1,7 +1,7 @@
 import flask_login
 from flask import Blueprint, render_template
 
-einstellungen = Blueprint('einstellungen', __name__, template_folder="templates")
+einstellungen = Blueprint("einstellungen", __name__, template_folder="templates")
 
 
 @einstellungen.route("/")

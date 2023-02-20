@@ -13,7 +13,7 @@ from kleiderkammer.kleidung.model.kleidungswaesche import Kleidungswaesche
 from kleiderkammer.mitglieder.model.mitglied import Mitglied
 from kleiderkammer.util.db import db
 
-api = Blueprint('kleidung_api', __name__)
+api = Blueprint("kleidung_api", __name__)
 
 
 @api.route("/hinzufuegen", methods=["POST"])
@@ -28,12 +28,17 @@ def hinzufuegen():
     groesse = data["groesse"]
     anschaffungsjahr = data["anschaffungsjahr"]
 
-    if modell and hersteller and kategoriename and code and groesse and anschaffungsjahr:
+    if (
+        modell
+        and hersteller
+        and kategoriename
+        and code
+        and groesse
+        and anschaffungsjahr
+    ):
         # get kategorie id
         try:
-            kategorie = Kleidungskategorie.query \
-                .filter_by(name=kategoriename) \
-                .one()
+            kategorie = Kleidungskategorie.query.filter_by(name=kategoriename).one()
         except NoResultFound:
             kategorie = Kleidungskategorie()
             kategorie.name = kategoriename
@@ -44,9 +49,9 @@ def hinzufuegen():
 
         # get typ id
         try:
-            typ = Kleidungstyp.query \
-                .filter_by(hersteller=hersteller, modell=modell, kategorie_id=kategorie.id) \
-                .one()
+            typ = Kleidungstyp.query.filter_by(
+                hersteller=hersteller, modell=modell, kategorie_id=kategorie.id
+            ).one()
         except NoResultFound:
             typ = Kleidungstyp()
             typ.hersteller = hersteller
@@ -78,9 +83,9 @@ def toggle_waesche():
     kleidung_id = data["kleidung_id"]
     action = data["action"]
 
-    waesche = Kleidungswaesche.query \
-        .filter_by(kleidung_id=kleidung_id, bis=None) \
-        .scalar()
+    waesche = Kleidungswaesche.query.filter_by(
+        kleidung_id=kleidung_id, bis=None
+    ).scalar()
 
     erfolg = False
     if action == "abgeben" and not waesche:
@@ -105,20 +110,30 @@ def toggle_waesche():
 def aktuelle_kleidung():
     mitglied_id = request.args["mitgliedId"]
 
-    aktuelle_kleidungsstuecke = Kleidung.query \
-        .with_entities(Kleidung.id, Kleidung.code, Kleidungstyp.modell, Kleidung.groesse, Kleidungsleihe.von) \
-        .join(Kleidungstyp, Kleidung.typ_id == Kleidungstyp.id) \
-        .join(Kleidungsleihe, Kleidung.id == Kleidungsleihe.kleidung_id) \
-        .filter_by(mitglied_id=mitglied_id, bis=None) \
+    aktuelle_kleidungsstuecke = (
+        Kleidung.query.with_entities(
+            Kleidung.id,
+            Kleidung.code,
+            Kleidungstyp.modell,
+            Kleidung.groesse,
+            Kleidungsleihe.von,
+        )
+        .join(Kleidungstyp, Kleidung.typ_id == Kleidungstyp.id)
+        .join(Kleidungsleihe, Kleidung.id == Kleidungsleihe.kleidung_id)
+        .filter_by(mitglied_id=mitglied_id, bis=None)
         .all()
+    )
 
-    response = [{
-        "id": kleidung.id,
-        "code": kleidung.code,
-        "modell": kleidung.modell,
-        "groesse": kleidung.groesse,
-        "von": kleidung.von
-    } for kleidung in aktuelle_kleidungsstuecke]
+    response = [
+        {
+            "id": kleidung.id,
+            "code": kleidung.code,
+            "modell": kleidung.modell,
+            "groesse": kleidung.groesse,
+            "von": kleidung.von,
+        }
+        for kleidung in aktuelle_kleidungsstuecke
+    ]
 
     return response
 
@@ -128,17 +143,19 @@ def aktuelle_kleidung():
 def status():
     kleidung_id = request.args["kleidungId"]
 
-    letzte_waesche = Kleidungswaesche.query \
-        .filter_by(kleidung_id=kleidung_id) \
-        .order_by(Kleidungswaesche.von.desc()) \
+    letzte_waesche = (
+        Kleidungswaesche.query.filter_by(kleidung_id=kleidung_id)
+        .order_by(Kleidungswaesche.von.desc())
         .first()
+    )
 
-    aktuelle_leihe = Kleidungsleihe.query \
-        .filter_by(kleidung_id=kleidung_id, bis=None) \
-        .join(Mitglied, Kleidungsleihe.mitglied_id == Mitglied.id, isouter=True) \
-        .with_entities(Kleidungsleihe.von, Mitglied.vorname, Mitglied.nachname) \
-        .order_by(Kleidungsleihe.von) \
+    aktuelle_leihe = (
+        Kleidungsleihe.query.filter_by(kleidung_id=kleidung_id, bis=None)
+        .join(Mitglied, Kleidungsleihe.mitglied_id == Mitglied.id, isouter=True)
+        .with_entities(Kleidungsleihe.von, Mitglied.vorname, Mitglied.nachname)
+        .order_by(Kleidungsleihe.von)
         .one_or_none()
+    )
 
     response = {
         "isInWaesche": letzte_waesche.bis is None if letzte_waesche else False,
@@ -146,10 +163,12 @@ def status():
         "leihe": {
             "mitglied": {
                 "vorname": aktuelle_leihe.vorname if aktuelle_leihe else None,
-                "nachname": aktuelle_leihe.nachname if aktuelle_leihe else None
-            } if aktuelle_leihe else None,
-            "seit": aktuelle_leihe.von if aktuelle_leihe else None
-        }
+                "nachname": aktuelle_leihe.nachname if aktuelle_leihe else None,
+            }
+            if aktuelle_leihe
+            else None,
+            "seit": aktuelle_leihe.von if aktuelle_leihe else None,
+        },
     }
 
     return response
@@ -158,37 +177,44 @@ def status():
 @api.route("/<kleidung_id>/leihen", methods=["GET"])
 @flask_login.login_required
 def leihen(kleidung_id):
-    leihen = Kleidungsleihe.query \
-        .filter_by(kleidung_id=kleidung_id) \
-        .join(Mitglied, Kleidungsleihe.mitglied_id == Mitglied.id, isouter=True) \
-        .with_entities(Kleidungsleihe.von, Kleidungsleihe.bis, Mitglied.id.label("mitglied_id"), Mitglied.vorname,
-                       Mitglied.nachname) \
-        .order_by(Kleidungsleihe.von.desc()) \
+    leihen = (
+        Kleidungsleihe.query.filter_by(kleidung_id=kleidung_id)
+        .join(Mitglied, Kleidungsleihe.mitglied_id == Mitglied.id, isouter=True)
+        .with_entities(
+            Kleidungsleihe.von,
+            Kleidungsleihe.bis,
+            Mitglied.id.label("mitglied_id"),
+            Mitglied.vorname,
+            Mitglied.nachname,
+        )
+        .order_by(Kleidungsleihe.von.desc())
         .all()
+    )
 
-    return [{
-        "mitglied": {
-            "id": leihe.mitglied_id,
-            "vorname": leihe.vorname,
-            "nachname": leihe.nachname
-        },
-        "von": leihe.von,
-        "bis": leihe.bis
-    } for leihe in leihen]
+    return [
+        {
+            "mitglied": {
+                "id": leihe.mitglied_id,
+                "vorname": leihe.vorname,
+                "nachname": leihe.nachname,
+            },
+            "von": leihe.von,
+            "bis": leihe.bis,
+        }
+        for leihe in leihen
+    ]
 
 
 @api.route("/<kleidung_id>/waeschen", methods=["GET"])
 @flask_login.login_required
 def waeschen(kleidung_id):
-    waeschen = Kleidungswaesche.query \
-        .filter_by(kleidung_id=kleidung_id) \
-        .order_by(Kleidungswaesche.von.desc()) \
+    waeschen = (
+        Kleidungswaesche.query.filter_by(kleidung_id=kleidung_id)
+        .order_by(Kleidungswaesche.von.desc())
         .all()
+    )
 
-    return [{
-        "von": waesche.von,
-        "bis": waesche.bis
-    } for waesche in waeschen]
+    return [{"von": waesche.von, "bis": waesche.bis} for waesche in waeschen]
 
 
 @api.route("/verleihen", methods=["POST"])
@@ -213,9 +239,7 @@ def verleihen():
 def zuruecknehmen():
     kleidung_id = request.form["kleidungId"]
 
-    leihe = Kleidungsleihe.query \
-        .filter_by(kleidung_id=kleidung_id, bis=None) \
-        .one()
+    leihe = Kleidungsleihe.query.filter_by(kleidung_id=kleidung_id, bis=None).one()
 
     leihe.bis = func.now()
 

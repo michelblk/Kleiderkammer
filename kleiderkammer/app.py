@@ -23,17 +23,17 @@ app = Flask(__name__)
 app.config.from_prefixed_env()
 
 # configure logging
-logging.getLogger('werkzeug').disabled = True
+logging.getLogger("werkzeug").disabled = True
 
 # register blueprints
-app.register_blueprint(login, url_prefix='/login')
-app.register_blueprint(login_api, url_prefix='/api/login')
-app.register_blueprint(kleidung, url_prefix='/kleidung')
-app.register_blueprint(kleidung_api, url_prefix='/api/kleidung')
-app.register_blueprint(mitglieder, url_prefix='/mitglieder')
-app.register_blueprint(mitglieder_api, url_prefix='/api/mitglieder')
-app.register_blueprint(einstellungen, url_prefix='/einstellungen')
-app.register_blueprint(einstellungen_api, url_prefix='/api/einstellungen')
+app.register_blueprint(login, url_prefix="/login")
+app.register_blueprint(login_api, url_prefix="/api/login")
+app.register_blueprint(kleidung, url_prefix="/kleidung")
+app.register_blueprint(kleidung_api, url_prefix="/api/kleidung")
+app.register_blueprint(mitglieder, url_prefix="/mitglieder")
+app.register_blueprint(mitglieder_api, url_prefix="/api/mitglieder")
+app.register_blueprint(einstellungen, url_prefix="/einstellungen")
+app.register_blueprint(einstellungen_api, url_prefix="/api/einstellungen")
 
 # initialize database
 db.init_app(app)
@@ -49,9 +49,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def user_loader(username):
-    return User.query \
-        .filter_by(username=username) \
-        .one_or_none()
+    return User.query.filter_by(username=username).one_or_none()
 
 
 @login_manager.request_loader
@@ -59,37 +57,35 @@ def request_loader(request):
     userId = session["id"] if "id" in session else None
 
     if userId:
-        user = User.query \
-            .filter_by(id=userId) \
-            .one_or_none()
+        user = User.query.filter_by(id=userId).one_or_none()
         return user
     return None
 
 
 @login_manager.unauthorized_handler
 def unauthorized_callback():
-    return redirect(app.url_for('login.index'))
+    return redirect(app.url_for("login.index"))
 
 
 @app.context_processor
 def inject_userinfo():
     user = flask_login.current_user
-    return {'username': user.username if user.is_authenticated else None}
+    return {"username": user.username if user.is_authenticated else None}
 
 
 @app.context_processor
 def inject_now():
-    return {'now': datetime.now()}
+    return {"now": datetime.now()}
 
 
 @app.route("/")
 def index():
     if current_user.is_authenticated:
-        return redirect(app.url_for('kleidung.index'))
+        return redirect(app.url_for("kleidung.index"))
     else:
-        return redirect(app.url_for('login.index'))
+        return redirect(app.url_for("login.index"))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # local testing only. Uwsgi does not call this method
     app.run()

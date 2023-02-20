@@ -5,7 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from kleiderkammer.login.model.User import User
 from kleiderkammer.util.db import db
 
-api = Blueprint('einstellungen_api', __name__)
+api = Blueprint("einstellungen_api", __name__)
 
 
 @api.route("/user", methods=["PUT"])
@@ -37,9 +37,7 @@ def remove_user(userid):
     if userid != str(flask_login.current_user.id):
         return Response(status=403)
 
-    user = User.query \
-        .filter_by(id=userid) \
-        .one_or_none()
+    user = User.query.filter_by(id=userid).one_or_none()
 
     db.session.delete(user)
     db.session.commit()
@@ -58,13 +56,16 @@ def change_password(userid):
     new_password = data["new-password"]
     new_password2 = data["new-password2"]
 
-    user = User.query \
-        .filter_by(id=userid) \
-        .one_or_none()
+    user = User.query.filter_by(id=userid).one_or_none()
 
-    if current_password and new_password and new_password2 \
-            and new_password == new_password2 and check_password_hash(user.password, current_password) \
-            and not check_password_hash(user.password, new_password):
+    if (
+        current_password
+        and new_password
+        and new_password2
+        and new_password == new_password2
+        and check_password_hash(user.password, current_password)
+        and not check_password_hash(user.password, new_password)
+    ):
         user.password = generate_password_hash(new_password)
         user.hasToChangePassword = False
 

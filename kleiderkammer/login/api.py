@@ -4,17 +4,15 @@ from werkzeug.security import check_password_hash
 
 from kleiderkammer.login.model.User import User
 
-api = Blueprint('login_api', __name__)
+api = Blueprint("login_api", __name__)
 
 
-@api.route("/", methods=['POST'])
+@api.route("/", methods=["POST"])
 def login():
-    username = request.form['username']
-    password = request.form['password']
+    username = request.form["username"]
+    password = request.form["password"]
 
-    user = User.query \
-        .filter_by(username=username) \
-        .one_or_none()
+    user = User.query.filter_by(username=username).one_or_none()
 
     if user and check_password_hash(user.password, password):
         flask_login.login_user(user)
@@ -28,7 +26,7 @@ def login():
         return redirect(url_for("login.index"))
 
 
-@api.route("/logout", methods=['GET'])
+@api.route("/logout", methods=["GET"])
 @flask_login.login_required
 def logout():
     flask_login.logout_user()

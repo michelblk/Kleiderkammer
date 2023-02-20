@@ -21,6 +21,10 @@ optional = true
 [tool.poetry.group.prod.dependencies]
 uWSGI = "^2.0.20"
 
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
