@@ -2,3 +2,4 @@
 /venv
 /.idea/sonarlint
 /.idea/inspectionProfiles
+__pycache__/
