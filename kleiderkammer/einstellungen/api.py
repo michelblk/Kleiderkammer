@@ -31,6 +31,21 @@ def add_user():
             return Response(status=400)
 
 
+@api.route("/user/<userid>", methods=["DELETE"])
+@flask_login.login_required
+def remove_user(userid):
+    if userid != str(flask_login.current_user.id):
+        return Response(status=403)
+
+    user = User.query \
+        .filter_by(id=userid) \
+        .one_or_none()
+
+    db.session.delete(user)
+    db.session.commit()
+    return Response(status=204)
+
+
 @api.route("/user/<userid>/password", methods=["POST"])
 @flask_login.login_required
 def change_password(userid):
