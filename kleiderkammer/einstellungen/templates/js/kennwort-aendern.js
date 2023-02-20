@@ -1,7 +1,7 @@
 'use strict';
 
 $(function () {
-    $("#kennwort-aendern").submit(function (e) { // FIXME submit funktioniert nicht
+    $("#kennwort-aendern").submit(function (e) {
         e.preventDefault();
 
         $.ajax({
@@ -12,7 +12,7 @@ $(function () {
             success: function () {
                 alert("Kennwort geändert");
             },
-            url: "{{ url_for('einstellungen_api.change_password') }}"
+            url: "{{ url_for('einstellungen_api.change_password', userid=current_user.id) }}"
         });
     });
 });

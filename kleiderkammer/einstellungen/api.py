@@ -1,6 +1,6 @@
 import flask_login
 from flask import Blueprint, Response, request
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from kleiderkammer.login.model.User import User
 from kleiderkammer.util.db import db
@@ -31,22 +31,29 @@ def add_user():
             return Response(status=400)
 
 
-@api.route("/password", methods=["POST"])
+@api.route("/user/<userid>/password", methods=["POST"])
 @flask_login.login_required
-def change_password():
+def change_password(userid):
     data = request.form
+
+    if userid != str(flask_login.current_user.id):
+        return Response(status=403)
 
     current_password = data["current-password"]
     new_password = data["new-password"]
     new_password2 = data["new-password2"]
 
     user = User.query \
-        .filter_by(username=flask_login.current_user.username) \
+        .filter_by(id=userid) \
         .one_or_none()
 
-    if current_password and new_password and new_password2 and new_password == new_password2 \
-            and check_password_hash(user.password, current_password):
-        user.password = new_password
+    if current_password and new_password and new_password2 \
+            and new_password == new_password2 and check_password_hash(user.password, current_password) \
+            and not check_password_hash(user.password, new_password):
+        user.password = generate_password_hash(new_password)
+        user.hasToChangePassword = False
 
         db.session.add(user)
         db.session.commit()
+        return Response(status=204)
+    return Response(status=400)

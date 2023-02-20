@@ -1,21 +1,21 @@
 <div>
-    <form>
+    <form id="kennwort-aendern">
         <div class="mb-3">
             <label for="current-password" class="form-label">Aktuelles Kennwort</label>
-            <input type="password" class="form-control" id="current-password">
+            <input type="password" class="form-control" id="current-password" name="current-password">
         </div>
 
         <div class="mb-3">
             <label for="new-password" class="form-label">Neues Kennwort</label>
-            <input type="password" class="form-control" id="new-password">
+            <input type="password" class="form-control" id="new-password" name="new-password">
         </div>
 
         <div class="mb-3">
             <label for="new-password2" class="form-label">Wiederholdung</label>
-            <input type="password" class="form-control" id="new-password2">
+            <input type="password" class="form-control" id="new-password2" name="new-password2">
         </div>
 
-        <div type="submit" class="btn btn-secondary">Ändern</div>
+        <button type="submit" class="btn btn-secondary">Ändern</button>
     </form>
 </div>
 <script>
