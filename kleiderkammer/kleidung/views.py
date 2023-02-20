@@ -67,7 +67,13 @@ def index():
         .all()
     jahre = [kleidung.anschaffungsjahr for kleidung in jahre]
 
-    waeschen = []
+    waeschen = Kleidungswaesche.query \
+        .with_entities(coalesce(count(Kleidungswaesche.kleidung_id), 0).label("waeschen")) \
+        .group_by(Kleidungswaesche.kleidung_id) \
+        .distinct() \
+        .order_by("waeschen") \
+        .all()
+    waeschen = [waesche.waeschen for waesche in waeschen]
 
     return render_template("html/kleidung.html", rows=rows, kategorien=kategorien, hersteller=hersteller,
                            modelle=modelle, groessen=groessen, jahre=jahre, waeschen=waeschen)

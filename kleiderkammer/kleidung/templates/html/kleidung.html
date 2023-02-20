@@ -22,7 +22,7 @@
                                 {% for item in data %}
                                     <li>
                                         <input class="form-check-input filter" type="checkbox" value="{{ item }}"
-                                               data-column="{{ column }}" />
+                                               data-column="{{ column }}"/>
                                         <label class="form-check-label">{{ item }}</label>
                                     </li>
                                 {% endfor %}
@@ -49,7 +49,7 @@
                         <td data-column="modell">{{ row.typ_modell }}</td>
                         <td data-column="groesse">{{ row.groesse }}</td>
                         <td data-column="jahr">{{ row.anschaffungsjahr }}</td>
-                        <td>{{ row.waeschen }}</td>
+                        <td data-column="waeschen">{{ row.waeschen }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

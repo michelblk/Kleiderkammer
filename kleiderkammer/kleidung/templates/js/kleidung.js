@@ -9,7 +9,7 @@ function getActiveFiltersForColumn(column) {
 function filter(column, row, allowedValues) {
     const actualValue = row.find(`[data-column="${column}"]`).text();
     return allowedValues.length === 0 || allowedValues.some(val => {
-        return actualValue.indexOf(val) > -1;
+        return actualValue === val;
     });
 }
 
@@ -20,6 +20,7 @@ $(function () {
         const modellFilter = getActiveFiltersForColumn('modell');
         const groesseFilter = getActiveFiltersForColumn('groesse');
         const jahrFilter = getActiveFiltersForColumn('jahr');
+        const waeschenFilter = getActiveFiltersForColumn('waeschen');
 
         $("#kleidungstabelle tr").each(function () {
             const row = $(this);
@@ -29,6 +30,7 @@ $(function () {
                 && filter('modell', row, modellFilter)
                 && filter('groesse', row, groesseFilter)
                 && filter('jahr', row, jahrFilter)
+                && filter('waeschen', row, waeschenFilter)
             );
         });
     });
