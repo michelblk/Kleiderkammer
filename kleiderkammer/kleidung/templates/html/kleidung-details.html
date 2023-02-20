@@ -1,6 +1,6 @@
 {% raw %}
 <script id="kleidung-details-template" type="text/x-handlebars-template">
-    <div class="modal" tabindex="-1" data-kleidung-id="{{ kleidungId }}">
+    <div class="modal modal-lg" tabindex="-1" data-kleidung-id="{{ kleidungId }}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -66,7 +66,7 @@
 </script>
 
 <script id="mitglied-auswaehlen-template" type="text/x-handlebars-template">
-    <div class="modal" tabindex="-1" data-kleidung-id="{{ kleidungId }}">
+    <div class="modal modal-over-modal" tabindex="-1" data-kleidung-id="{{ kleidungId }}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -76,26 +76,26 @@
                 <div class="modal-body">
                     <table class="w-100 table table-striped">
                         <thead>
-                        <tr>
-                            <th scope="col">Nachname</th>
-                            <th scope="col">Vorname</th>
-                            <th scope="col">Aktion</th>
-                        </tr>
+                            <tr>
+                                <th scope="col">Nachname</th>
+                                <th scope="col">Vorname</th>
+                                <th scope="col">Aktion</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {{#each mitglieder}}
-                        <tr>
-                            <td>{{ vorname }}</td>
-                            <td>{{ nachname }}</td>
-                            <td>
-                                <button class="btn btn-sm btn-secondary mitglied-waehlen"
-                                        data-mitglied-id="{{ id }}">
-                                    Ausw&auml;hlen
-                                </button>
-                            </td>
-                        </tr>
-                        {{/each}}
-                        </tbod
+                            {{#each mitglieder}}
+                            <tr>
+                                <td>{{ vorname }}</td>
+                                <td>{{ nachname }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-secondary mitglied-waehlen"
+                                            data-mitglied-id="{{ id }}">
+                                        Ausw&auml;hlen
+                                    </button>
+                                </td>
+                            </tr>
+                            {{/each}}
+                            </tbod
                     </table>
                 </div>
                 <div class="modal-footer">
@@ -108,23 +108,23 @@
 <script id="kleidung-history-template" type="text/x-handlebars-template">
     <table class="table w-100">
         <thead>
-        <tr>
-            <th scope="col">Von</th>
-            <th scope="col">Bis</th>
-            <th scope="col">Aktion</th>
-        </tr>
+            <tr>
+                <th scope="col">Von</th>
+                <th scope="col">Bis</th>
+                <th scope="col">Aktion</th>
+            </tr>
         </thead>
         <tbody>
-        {{#each this}}
-        <tr>
-            <td>{{ von }}</td>
-            <td>{{ bis }}</td>
-            <td>
-                {{ aktion }}
-                {{#if mitglied}} {{ mitglied.vorname }} {{ mitglied.nachname }}{{/if}}
-            </td>
-        </tr>
-        {{/each}}
+            {{#each this}}
+            <tr>
+                <td>{{ von }}</td>
+                <td>{{ bis }}</td>
+                <td>
+                    {{ aktion }}
+                    {{#if mitglied}} {{ mitglied.vorname }} {{ mitglied.nachname }}{{/if}}
+                </td>
+            </tr>
+            {{/each}}
         </tbody>
     </table>
 </script>
@@ -134,3 +134,7 @@
 <script>
     {% include 'js/kleidung-details.js' %}
 </script>
+
+<style>
+    {%  include 'css/kleidung-details.css' %}
+</style>

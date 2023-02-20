@@ -1,0 +1,7 @@
+.modal-over-modal.show {
+    z-index: 1062 !important; /* Display child modal over child backdrop */
+}
+
+.modal-backdrop.show:nth-of-type(even) {
+    z-index: 1061 !important; /* Display child backdrop over parent modal */
+}
