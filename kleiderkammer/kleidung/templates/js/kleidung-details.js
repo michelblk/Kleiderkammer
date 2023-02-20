@@ -94,10 +94,14 @@ $(function () {
 });
 
 function refreshModal() {
-    const mitgliedId = $("#kleidung-details .modal").data("kleidung-id");
+    const kleidungId = $("#kleidung-details .modal").data("kleidung-id");
 
-    requestAktuellenStatus(mitgliedId, updateKleidungsstatus, () => {
+    requestAktuellenStatus(kleidungId, updateKleidungsstatus, () => {
         alert("Kleidungsinformationen konnten nicht abgerufen werden.");
+    });
+
+    requestHistory(kleidungId, updateHistory, () => {
+        alert("Kleidungshistorie konnte nicht abgerufen werden");
     });
 }
 
@@ -120,4 +124,75 @@ function updateKleidungsstatus(data) {
     const actions = $("#kleidung-actions");
 
     actions.html(actionsTemplate(data));
+}
+
+function requestHistory(kleidungId, success, failure) {
+    var data = {"leihen": [], "waeschen": []};
+    $.when(
+        $.ajax({
+            cache: false,
+            method: 'GET',
+            success: function (leihen) {
+                data["leihen"] = leihen;
+            },
+            failure: failure,
+            url: "{{ url_for('kleidung_api.leihen', kleidung_id='_kleidung_id_') }}".replace("_kleidung_id_", kleidungId)
+        }),
+        $.ajax({
+            cache: false,
+            method: 'GET',
+            success: function (waeschen) {
+                data["waeschen"] = waeschen;
+            },
+            failure: failure,
+            url: "{{ url_for('kleidung_api.waeschen', kleidung_id='_kleidung_id_') }}".replace("_kleidung_id_", kleidungId)
+        })
+    ).then(function () {
+        const merged_data = [];
+
+        $.each(data["leihen"], function (i, item) {
+            merged_data.push({
+                "von": item.von,
+                "bis": item.bis,
+                "aktion": "Leihe",
+                "mitglied": {
+                    "vorname": item.mitglied.vorname,
+                    "nachname": item.mitglied.nachname
+                }
+            });
+        });
+        $.each(data["waeschen"], function (i, item) {
+            merged_data.push({
+                "von": item.von,
+                "bis": item.bis,
+                "aktion": "Wäsche",
+                "mitglied": undefined
+            });
+        });
+
+        merged_data.sort((a, b) => {
+            if (a.bis && b.bis) {
+                return Date.parse(b.bis) - Date.parse(a.bis)
+            }
+            if (!a.bis && b.bis) {
+                return -1;
+            }
+            if (a.bis && !b.bis) {
+                return 1;
+            }
+            return Date.parse(b.von) - Date.parse(a.von)
+        });
+
+        console.log(merged_data);
+
+        success(merged_data);
+    });
+}
+
+function updateHistory(data) {
+    const historyTemplateObj = $("#kleidung-history-template");
+    const historyTemplate = Handlebars.compile(historyTemplateObj.html());
+    const history = $("#kleidung-history");
+
+    history.html(historyTemplate(data));
 }

@@ -155,6 +155,42 @@ def status():
     return response
 
 
+@api.route("/<kleidung_id>/leihen", methods=["GET"])
+@flask_login.login_required
+def leihen(kleidung_id):
+    leihen = Kleidungsleihe.query \
+        .filter_by(kleidung_id=kleidung_id) \
+        .join(Mitglied, Kleidungsleihe.mitglied_id == Mitglied.id, isouter=True) \
+        .with_entities(Kleidungsleihe.von, Kleidungsleihe.bis, Mitglied.id.label("mitglied_id"), Mitglied.vorname,
+                       Mitglied.nachname) \
+        .order_by(Kleidungsleihe.von.desc()) \
+        .all()
+
+    return [{
+        "mitglied": {
+            "id": leihe.mitglied_id,
+            "vorname": leihe.vorname,
+            "nachname": leihe.nachname
+        },
+        "von": leihe.von,
+        "bis": leihe.bis
+    } for leihe in leihen]
+
+
+@api.route("/<kleidung_id>/waeschen", methods=["GET"])
+@flask_login.login_required
+def waeschen(kleidung_id):
+    waeschen = Kleidungswaesche.query \
+        .filter_by(kleidung_id=kleidung_id) \
+        .order_by(Kleidungswaesche.von.desc()) \
+        .all()
+
+    return [{
+        "von": waesche.von,
+        "bis": waesche.bis
+    } for waesche in waeschen]
+
+
 @api.route("/verleihen", methods=["POST"])
 @flask_login.login_required
 def verleihen():

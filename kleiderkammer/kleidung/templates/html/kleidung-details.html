@@ -8,24 +8,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div id="kleidung-actions">
-                    </div>
-                    <table class="w-100">
-                        <thead>
-                            <tr>
-                                <th scope="col">Von</th>
-                                <th scope="col">Bis</th>
-                                <th scope="col">Aktion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div id="kleidung-actions"></div>
+                    <div id="kleidung-history"></div>
                 </div>
                 <div class="modal-footer">
                 </div>
@@ -92,26 +76,26 @@
                 <div class="modal-body">
                     <table class="w-100 table table-striped">
                         <thead>
-                            <tr>
-                                <th scope="col">Nachname</th>
-                                <th scope="col">Vorname</th>
-                                <th scope="col">Aktion</th>
-                            </tr>
+                        <tr>
+                            <th scope="col">Nachname</th>
+                            <th scope="col">Vorname</th>
+                            <th scope="col">Aktion</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {{#each mitglieder}}
-                            <tr>
-                                <td>{{ vorname }}</td>
-                                <td>{{ nachname }}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-secondary mitglied-waehlen"
-                                            data-mitglied-id="{{ id }}">
-                                        Ausw&auml;hlen
-                                    </button>
-                                </td>
-                            </tr>
-                            {{/each}}
-                        </tbody>
+                        {{#each mitglieder}}
+                        <tr>
+                            <td>{{ vorname }}</td>
+                            <td>{{ nachname }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-secondary mitglied-waehlen"
+                                        data-mitglied-id="{{ id }}">
+                                    Ausw&auml;hlen
+                                </button>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        </tbod
                     </table>
                 </div>
                 <div class="modal-footer">
@@ -119,6 +103,30 @@
             </div>
         </div>
     </div>
+</script>
+
+<script id="kleidung-history-template" type="text/x-handlebars-template">
+    <table class="table w-100">
+        <thead>
+        <tr>
+            <th scope="col">Von</th>
+            <th scope="col">Bis</th>
+            <th scope="col">Aktion</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each this}}
+        <tr>
+            <td>{{ von }}</td>
+            <td>{{ bis }}</td>
+            <td>
+                {{ aktion }}
+                {{#if mitglied}} {{ mitglied.vorname }} {{ mitglied.nachname }}{{/if}}
+            </td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
 </script>
 
 {% endraw %}
