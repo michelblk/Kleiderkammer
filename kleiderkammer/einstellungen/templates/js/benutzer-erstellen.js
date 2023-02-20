@@ -1,7 +1,7 @@
 'use strict';
 
 $(function () {
-    $("#benutzer-erstellen").submit(function (e) { // FIXME submit funktioniert nicht
+    $("#benutzer-erstellen").submit(function (e) {
         e.preventDefault();
 
         $.ajax({

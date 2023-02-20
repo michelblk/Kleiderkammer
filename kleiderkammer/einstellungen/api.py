@@ -19,7 +19,7 @@ def add_user():
     if username and password:
         user = User()
         user.username = username
-        user.password = password
+        user.password = generate_password_hash(password)
         user.hasToChangePassword = True
 
         db.session.add(user)
