@@ -33,7 +33,7 @@ COPY --from=builder /venv /venv
 COPY --from=builder /app/dist .
 COPY wsgi.ini /app
 
-RUN . /venv/bin/activate && pip install *.whl
+RUN . /venv/bin/activate && pip install *.whl uWSGI==2.0.20
 
 RUN apk del .build-deps
 
