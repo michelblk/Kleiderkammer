@@ -10,7 +10,7 @@ function filter(column, row, allowedValues) {
     const actualValue = row.find(`[data-column="${column}"]`).text();
     return allowedValues.length === 0 || allowedValues.some(val => {
         return actualValue.indexOf(val) > -1;
-    })
+    });
 }
 
 $(function () {
