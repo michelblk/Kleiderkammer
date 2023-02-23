@@ -1,65 +1,72 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %}Kleidung{% endblock %} {% block content %}
+<div class="mt-1">
+    <a class="btn btn-dark btn-sm float-end" href="{{ url_for('kleidung.hinzufuegen') }}"> Hinzuf&uuml;gen </a>
+</div>
+<div class="mt-1">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                {% macro table_header(title, column, data) %}
+                <th scope="col">
+                    <span class="dropdown-toggle text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ title }}
+                    </span>
+                    <ul class="dropdown-menu">
+                        {% for item in data %}
+                        <li>
+                            <input
+                                class="form-check-input filter"
+                                data-column="{{ column }}"
+                                type="checkbox"
+                                value="{{ item }}"
+                            />
+                            <label class="form-check-label">{{ item }}</label>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </th>
+                {% endmacro %}
 
-{% block title %}Kleidung{% endblock %}
+                <th scope="col">Code</th>
+                <!-- prettier-ignore -->
+                {{ table_header('Kategorie', 'kategorie', kategorien) }}
+                <!-- prettier-ignore -->
+                {{ table_header('Hersteller', 'hersteller', hersteller) }}
+                <!-- prettier-ignore -->
+                {{ table_header('Modell', 'modell', modelle) }}
+                <!-- prettier-ignore -->
+                {{ table_header('Gr\xF6\xDFe', 'groesse', groessen) }}
+                <!-- prettier-ignore -->
+                {{ table_header('Jahr', 'jahr', jahre) }}
+                <!-- prettier-ignore -->
+                {{ table_header('W\xE4schen', 'waeschen', waeschen) }}
+            </tr>
+        </thead>
+        <tbody id="kleidungstabelle">
+            {% for row in rows -%}
+            <tr
+                class="kleidung"
+                data-id="{{ row.id }}"
+                data-typ="{{ row.typ_id }}"
+                data-kategorie-id="{{ row.kategorie_id }}"
+            >
+                <th data-column="code" scope="row">{{ row.code }}</th>
+                <td data-column="kategorie">{{ row.kategorie_name }}</td>
+                <td data-column="hersteller">{{ row.typ_hersteller }}</td>
+                <td data-column="modell">{{ row.typ_modell }}</td>
+                <td data-column="groesse">{{ row.groesse }}</td>
+                <td data-column="jahr">{{ row.anschaffungsjahr }}</td>
+                <td data-column="waeschen">{{ row.waeschen }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-{% block content %}
-    <div class="mt-1">
-        <a class="btn btn-dark btn-sm float-end" href="{{ url_for("kleidung.hinzufuegen") }}">
-            Hinzuf&uuml;gen
-        </a>
-    </div>
-    <div class="mt-1">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    {% macro table_header(title, column, data) %}
-                        <th scope="col">
-                            <span class="dropdown-toggle text-decoration-none" data-bs-toggle="dropdown"
-                                  aria-expanded="false">
-                                {{ title }}
-                            </span>
-                            <ul class="dropdown-menu">
-                                {% for item in data %}
-                                    <li>
-                                        <input class="form-check-input filter" type="checkbox" value="{{ item }}"
-                                               data-column="{{ column }}"/>
-                                        <label class="form-check-label">{{ item }}</label>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </th>
-                    {% endmacro %}
+<div id="kleidung-details"></div>
+{% include 'html/kleidung-details.html' %}
 
-                    <th scope="col">Code</th>
-                    {{ table_header('Kategorie', 'kategorie', kategorien) }}
-                    {{ table_header('Hersteller', 'hersteller', hersteller) }}
-                    {{ table_header('Modell', 'modell', modelle) }}
-                    {{ table_header('Gr\xF6\xDFe', 'groesse', groessen) }}
-                    {{ table_header('Jahr', 'jahr', jahre) }}
-                    {{ table_header('W\xE4schen', 'waeschen', waeschen) }}
-                </tr>
-            </thead>
-            <tbody id="kleidungstabelle">
-                {% for row in rows -%}
-                    <tr class="kleidung" data-id="{{ row.id }}" data-typ="{{ row.typ_id }}"
-                        data-kategorie-id="{{ row.kategorie_id }}">
-                        <th scope="row" data-column="code">{{ row.code }}</th>
-                        <td data-column="kategorie">{{ row.kategorie_name }}</td>
-                        <td data-column="hersteller">{{ row.typ_hersteller }}</td>
-                        <td data-column="modell">{{ row.typ_modell }}</td>
-                        <td data-column="groesse">{{ row.groesse }}</td>
-                        <td data-column="jahr">{{ row.anschaffungsjahr }}</td>
-                        <td data-column="waeschen">{{ row.waeschen }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <div id="kleidung-details"></div>
-    {% include 'html/kleidung-details.html' %}
-
-    <script>
-        {% include 'js/kleidung.js' %}
-    </script>
+<script>
+    {% include 'js/kleidung.js' %}
+</script>
 {% endblock %}

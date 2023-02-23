@@ -1,58 +1,75 @@
-{% extends 'base.html' %}
-
-{% block title %}Kleidung hinzuf&uuml;gen{% endblock %}
-
-{% block content %}
-    <div class="mt-1">
-        <a class="btn btn-dark btn-sm float-end" href="{{ url_for("kleidung.index") }}">
-            Zur&uuml;ck
-        </a>
-    </div>
-    <div class="mt-1">
-        <form id="form">
-            <div class="mb-3">
-                <label for="modell" class="form-label">Modell</label>
-                <input type="text" name="modell" id="modell" class="form-control" list="modelle" autocomplete="off"
-                       required />
-                <datalist id="modelle">
-                    {% for modell in modelle -%}
-                        <option value="{{ modell.modell }}" data-hersteller="{{ modell.hersteller }}"
-                                data-kategorie="{{ modell.kategorie.name }}" />
-                    {% endfor %}
-                </datalist>
-            </div>
-            <div class="mb-3">
-                <label for="hersteller" class="form-label">Hersteller</label>
-                <input type="text" name="hersteller" id="hersteller" class="form-control" autocomplete="off" required />
-            </div>
-            <div class="mb-3">
-                <label for="kategorie" class="form-label">Kategorie</label>
-                <input type="text" name="kategorie" id="kategorie" class="form-control" autocomplete="off" required />
-            </div>
-            <div class="mb-3">
-                <label for="code" class="form-label">Code</label>
-                <input type="text" name="code" id="code" class="form-control" autocomplete="off" required />
-            </div>
-            <div class="mb-3">
-                <label for="groesse" class="form-label">Gr&ouml;&szlig;e</label>
-                <input type="text" name="groesse" id="groesse" class="form-control" list="groessen" autocomplete="off"
-                       required />
-                <datalist id="groessen">
-                    {% for groesse in groessen -%}
-                        <option value="{{ groesse }}" />
-                    {% endfor %}
-                </datalist>
-            </div>
-            <div class="mb-3">
-                <label for="anschaffungsjahr" class="form-label">Anschaffungsjahr</label>
-                <input type="number" name="anschaffungsjahr" value="{{ now.year }}" id="anschaffungsjahr"
-                       class="form-control"
-                       autocomplete="off" required />
-            </div>
-            <button type="submit" class="btn btn-primary">Hinzuf&uuml;gen</button>
-        </form>
-    </div>
-    <script>
-        {% include 'js/kleidung-hinzufuegen.js' %}
-    </script>
+{% extends 'base.html' %} {% block title %}Kleidung hinzuf&uuml;gen{% endblock %} {% block content %}
+<div class="mt-1">
+    <a class="btn btn-dark btn-sm float-end" href="{{ url_for('kleidung.index') }}"> Zur&uuml;ck </a>
+</div>
+<div class="mt-1">
+    <form id="form">
+        <div class="mb-3">
+            <label class="form-label" for="modell">Modell</label>
+            <input
+                class="form-control"
+                id="modell"
+                name="modell"
+                type="text"
+                list="modelle"
+                autocomplete="off"
+                required
+            />
+            <datalist id="modelle">
+                {% for modell in modelle -%}
+                <option
+                    data-hersteller="{{ modell.hersteller }}"
+                    data-kategorie="{{ modell.kategorie.name }}"
+                    value="{{ modell.modell }}"
+                />
+                {% endfor %}
+            </datalist>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="hersteller">Hersteller</label>
+            <input class="form-control" id="hersteller" name="hersteller" type="text" autocomplete="off" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="kategorie">Kategorie</label>
+            <input class="form-control" id="kategorie" name="kategorie" type="text" autocomplete="off" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="code">Code</label>
+            <input class="form-control" id="code" name="code" type="text" autocomplete="off" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="groesse">Gr&ouml;&szlig;e</label>
+            <input
+                class="form-control"
+                id="groesse"
+                name="groesse"
+                type="text"
+                list="groessen"
+                autocomplete="off"
+                required
+            />
+            <datalist id="groessen">
+                {% for groesse in groessen -%}
+                <option value="{{ groesse }}" />
+                {% endfor %}
+            </datalist>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="anschaffungsjahr">Anschaffungsjahr</label>
+            <input
+                class="form-control"
+                id="anschaffungsjahr"
+                name="anschaffungsjahr"
+                type="number"
+                value="{{ now.year }}"
+                autocomplete="off"
+                required
+            />
+        </div>
+        <button class="btn btn-primary" type="submit">Hinzuf&uuml;gen</button>
+    </form>
+</div>
+<script>
+    {% include 'js/kleidung-hinzufuegen.js' %}
+</script>
 {% endblock %}

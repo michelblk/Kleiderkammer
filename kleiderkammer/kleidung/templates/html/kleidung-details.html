@@ -1,10 +1,10 @@
 {% raw %}
 <script id="kleidung-details-template" type="text/x-handlebars-template">
-    <div class="modal modal-lg" tabindex="-1" data-kleidung-id="{{ kleidungId }}">
+    <div class="modal modal-lg" tabindex="-1" data-kleidung-id="{{kleidungId}}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{title}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -25,40 +25,53 @@
             <td>Standort</td>
             <td>
                 {{#if leihe.mitglied}}
-                {{ leihe.mitglied.nachname }}, {{ leihe.mitglied.vorname }}
+                    {{leihe.mitglied.nachname}},
+                    {{leihe.mitglied.vorname}}
                 {{else}}
-                <!-- TODO zwischen Inaktiv und Lager differenzieren -->
-                Lager
+                    <!-- TODO zwischen Inaktiv und Lager differenzieren -->
+                    Lager
                 {{/if}}
             </td>
             <td>
                 {{#if leihe.mitglied}}
-                <button type="button" class="btn btn-secondary btn-sm float-end verleihen-button"
-                        data-action="zuruecknehmen">
-                    Zur&uuml;cknehmen
-                </button>
+                    <button
+                        type="button"
+                        class="btn btn-secondary btn-sm float-end verleihen-button"
+                        data-action="zuruecknehmen"
+                    >
+                        Zur&uuml;cknehmen
+                    </button>
                 {{else}}
-                <button type="button" class="btn btn-secondary btn-sm float-end verleihen-button"
-                        data-action="verleihen">
-                    Verleihen
-                </button>
+                    <button
+                        type="button"
+                        class="btn btn-secondary btn-sm float-end verleihen-button"
+                        data-action="verleihen"
+                    >
+                        Verleihen
+                    </button>
                 {{/if}}
             </td>
         </tr>
         <tr>
             <td>Letzte W&auml;sche</td>
-            <td>{{ zuletztGewaschen }}</td>
+            <td>{{zuletztGewaschen}}</td>
             <td>
                 {{#if isInWaesche}}
-                <button type="button" class="btn btn-secondary btn-sm float-end waschen-button"
-                        data-action="erhalten">
-                    W&auml;sche erhalten
-                </button>
+                    <button
+                        type="button"
+                        class="btn btn-secondary btn-sm float-end waschen-button"
+                        data-action="erhalten"
+                    >
+                        W&auml;sche erhalten
+                    </button>
                 {{else}}
-                <button type="button" class="btn btn-secondary btn-sm float-end waschen-button"
-                        data-action="abgeben">
-                    W&auml;sche abgeben
-                </button>
+                    <button
+                        type="button"
+                        class="btn btn-secondary btn-sm float-end waschen-button"
+                        data-action="abgeben"
+                    >
+                        W&auml;sche abgeben
+                    </button>
                 {{/if}}
             </td>
         </tr>
@@ -116,14 +129,17 @@
         </thead>
         <tbody>
             {{#each this}}
-            <tr>
-                <td>{{ von }}</td>
-                <td>{{ bis }}</td>
-                <td>
-                    {{ aktion }}
-                    {{#if mitglied}} {{ mitglied.vorname }} {{ mitglied.nachname }}{{/if}}
-                </td>
-            </tr>
+                <tr>
+                    <td>{{von}}</td>
+                    <td>{{bis}}</td>
+                    <td>
+                        {{aktion}}
+                        {{#if mitglied}}
+                            {{mitglied.vorname}}
+                            {{mitglied.nachname}}
+                        {{/if}}
+                    </td>
+                </tr>
             {{/each}}
         </tbody>
     </table>

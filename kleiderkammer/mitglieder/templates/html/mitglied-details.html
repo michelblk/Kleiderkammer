@@ -1,10 +1,10 @@
 {% raw %}
 <script id="mitglied-details-template" type="text/x-handlebars-template">
-    <div class="modal" tabindex="-1" data-mitglied-id="{{ mitgliedId }}">
+    <div class="modal" tabindex="-1" data-mitglied-id="{{mitgliedId}}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ title }}</h5>
+                    <h5 class="modal-title">{{title}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -31,11 +31,11 @@
 
 <script id="aktuelle-kleidung-row-template" type="text/x-handlebars-template">
     {{#each this}}
-        <tr data-kleidung-id="{{ id }}">
-            <td>{{ code }}</td>
-            <td>{{ modell }}</td>
-            <td>{{ groesse }}</td>
-            <td>{{ von }}</td>
+        <tr data-kleidung-id="{{id}}">
+            <td>{{code}}</td>
+            <td>{{modell}}</td>
+            <td>{{groesse}}</td>
+            <td>{{von}}</td>
         </tr>
     {{/each}}
 </script>

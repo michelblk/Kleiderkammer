@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 $(function () {
     $("#modell").change(function () {
@@ -7,8 +7,8 @@ $(function () {
         var selectedOption = datalist.querySelector(`[value="${input.value}"]`);
 
         if (selectedOption) {
-            const hersteller = $(selectedOption).data('hersteller');
-            const kategorie = $(selectedOption).data('kategorie');
+            const hersteller = $(selectedOption).data("hersteller");
+            const kategorie = $(selectedOption).data("kategorie");
             $("#hersteller").val(hersteller);
             $("#kategorie").val(kategorie);
         }
@@ -20,13 +20,13 @@ $(function () {
 
         $.ajax({
             cache: false,
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             data: $("#form").serialize(),
-            method: 'POST',
+            method: "POST",
             success: function () {
                 location.href = "{{ url_for('kleidung.index') }}";
             },
-            url: "{{ url_for('kleidung_api.hinzufuegen') }}"
+            url: "{{ url_for('kleidung_api.hinzufuegen') }}",
         });
     });
 });

@@ -1,6 +1,6 @@
 import flask_login
 from flask import Blueprint, render_template
-from sqlalchemy.sql.functions import count, coalesce
+from sqlalchemy.sql.functions import coalesce, count
 
 from kleiderkammer.kleidung.model.kleidungsleihe import Kleidungsleihe
 from kleiderkammer.mitglieder.model.mitglied import Mitglied

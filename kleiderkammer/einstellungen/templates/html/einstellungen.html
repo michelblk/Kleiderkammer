@@ -1,63 +1,54 @@
-{% extends 'base.html' %}
-
-{% block title %}Einstellungen{% endblock %}
-
-{% block content %}
-    <div id="accordion" class="accordion">
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseLogout">
-                    Abmelden
-                </button>
-            </h2>
-            <div id="collapseLogout" class="accordion-collapse collapse" data-bs-parent="#accordion">
-                <div class="accordion-body">
-                    <a href="{{ url_for("login_api.logout") }}" class="btn btn-secondary">Abmelden</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapsePassword">
-                    Kennwort &auml;ndern
-                </button>
-            </h2>
-            <div id="collapsePassword" class="accordion-collapse collapse" data-bs-parent="#accordion">
-                <div class="accordion-body">
-                    {% include 'html/kennwort-aendern.html' %}
-                </div>
-            </div>
-        </div>
-
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseCreateUser">
-                    Benutzer anlegen
-                </button>
-            </h2>
-            <div id="collapseCreateUser" class="accordion-collapse collapse" data-bs-parent="#accordion">
-                <div class="accordion-body">
-                    {% include 'html/benutzer-erstellen.html' %}
-                </div>
-            </div>
-        </div>
-
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseDeleteUser">
-                    Benutzer löschen
-                </button>
-            </h2>
-            <div id="collapseDeleteUser" class="accordion-collapse collapse" data-bs-parent="#accordion">
-                <div class="accordion-body">
-                    {% include 'html/benutzer-loeschen.html' %}
-                </div>
-            </div>
+{% extends 'base.html' %} {% block title %}Einstellungen{% endblock %} {% block content %}
+<div class="mt-1">
+    <a class="btn btn-secondary float-end" href="{{ url_for('login_api.logout') }}">Abmelden</a>
+</div>
+<div class="accordion mt-1" id="accordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button
+                class="accordion-button collapsed"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapsePassword"
+                type="button"
+            >
+                Kennwort &auml;ndern
+            </button>
+        </h2>
+        <div class="accordion-collapse collapse" id="collapsePassword" data-bs-parent="#accordion">
+            <div class="accordion-body">{% include 'html/kennwort-aendern.html' %}</div>
         </div>
     </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button
+                class="accordion-button collapsed"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseCreateUser"
+                type="button"
+            >
+                Benutzer anlegen
+            </button>
+        </h2>
+        <div class="accordion-collapse collapse" id="collapseCreateUser" data-bs-parent="#accordion">
+            <div class="accordion-body">{% include 'html/benutzer-erstellen.html' %}</div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button
+                class="accordion-button collapsed"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseDeleteUser"
+                type="button"
+            >
+                Benutzer löschen
+            </button>
+        </h2>
+        <div class="accordion-collapse collapse" id="collapseDeleteUser" data-bs-parent="#accordion">
+            <div class="accordion-body">{% include 'html/benutzer-loeschen.html' %}</div>
+        </div>
+    </div>
+</div>
 {% endblock %}

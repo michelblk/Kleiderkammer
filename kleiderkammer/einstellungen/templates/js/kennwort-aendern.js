@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 $(function () {
     $("#kennwort-aendern").submit(function (e) {
@@ -6,13 +6,13 @@ $(function () {
 
         $.ajax({
             cache: false,
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             data: $("#kennwort-aendern").serialize(),
-            method: 'POST',
+            method: "POST",
             success: function () {
                 alert("Kennwort geändert");
             },
-            url: "{{ url_for('einstellungen_api.change_password', userid=current_user.id) }}"
+            url: "{{ url_for('einstellungen_api.change_password', userid=current_user.id) }}",
         });
     });
 });

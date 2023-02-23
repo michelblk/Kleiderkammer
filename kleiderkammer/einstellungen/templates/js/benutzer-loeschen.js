@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 $(function () {
     $("#benutzer-loeschen").submit(function (e) {
@@ -6,12 +6,12 @@ $(function () {
 
         $.ajax({
             cache: false,
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            method: 'DELETE',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            method: "DELETE",
             success: function () {
-                location.href = "{{ url_for('index') }}"
+                location.href = "{{ url_for('index') }}";
             },
-            url: "{{ url_for('einstellungen_api.remove_user', userid=current_user.id) }}"
+            url: "{{ url_for('einstellungen_api.remove_user', userid=current_user.id) }}",
         });
     });
 });

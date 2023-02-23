@@ -1,37 +1,44 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %}Kleidung{% endblock %} {% block content %}
 
-{% block title %}Kleidung{% endblock %}
+<section class="h-100">
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Anmelden</h3>
 
-{% block content %}
+                        <form action="{{ url_for('login_api.login') }}" method="POST">
+                            <div class="mb-4">
+                                <label class="form-label" for="username-input">Benutzername</label>
+                                <input
+                                    class="form-control"
+                                    id="username-input"
+                                    name="username"
+                                    type="text"
+                                    placeholder="MaxMustermann"
+                                    autofocus
+                                />
+                            </div>
 
-    <section class="h-100">
-        <div class="container h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-12 col-md-5">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3>Anmelden</h3>
+                            <div class="mb-4">
+                                <label class="form-label" for="password-input">Passwort</label>
+                                <input
+                                    class="form-control"
+                                    id="password-input"
+                                    name="password"
+                                    type="password"
+                                    placeholder="{% for i in range(15) %}&#8226;{% endfor %}"
+                                />
+                            </div>
 
-                            <form action="{{ url_for("login_api.login") }}" method="POST">
-                                <div class="mb-4">
-                                    <label class="form-label" for="username-input">Benutzername</label>
-                                    <input type="text" id="username-input" class="form-control" name="username"
-                                           placeholder="MaxMustermann" autofocus>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label class="form-label" for="password-input">Passwort</label>
-                                    <input type="password" id="password-input" class="form-control" name="password"
-                                           placeholder="{% for i in range(15) %}&#8226;{% endfor %}">
-                                </div>
-
-                                <button class="btn btn-primary" type="submit">Anmelden</button>
-                            </form>
-                        </div>
+                            <button class="btn btn-primary" type="submit">Anmelden</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
 {% endblock %}

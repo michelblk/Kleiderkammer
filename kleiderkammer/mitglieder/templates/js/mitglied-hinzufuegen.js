@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 $(function () {
     $("#form").submit(function (event) {
@@ -6,13 +6,13 @@ $(function () {
 
         $.ajax({
             cache: false,
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             data: $("#form").serialize(),
-            method: 'POST',
+            method: "POST",
             success: function () {
                 location.href = "{{ url_for('mitglieder.index') }}";
             },
-            url: "{{ url_for('mitglieder_api.hinzufuegen') }}"
+            url: "{{ url_for('mitglieder_api.hinzufuegen') }}",
         });
     });
 });
