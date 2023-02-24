@@ -1,7 +1,7 @@
 {% raw %}
 <script id="kleidung-details-template" type="text/x-handlebars-template">
     <div class="modal modal-lg" tabindex="-1" data-kleidung-id="{{kleidungId}}">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{title}}</h5>
@@ -11,7 +11,8 @@
                     <div id="kleidung-actions"></div>
                     <div id="kleidung-history"></div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-sm float-start loeschen-button">L&ouml;schen</button>
                 </div>
             </div>
         </div>

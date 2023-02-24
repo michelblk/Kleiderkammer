@@ -29,12 +29,12 @@ def hinzufuegen():
     anschaffungsjahr = data["anschaffungsjahr"]
 
     if (
-        modell
-        and hersteller
-        and kategoriename
-        and code
-        and groesse
-        and anschaffungsjahr
+            modell
+            and hersteller
+            and kategoriename
+            and code
+            and groesse
+            and anschaffungsjahr
     ):
         # get kategorie id
         try:
@@ -74,6 +74,27 @@ def hinzufuegen():
         db.session.commit()
 
     return Response(status=201)
+
+
+@api.route("/<kleidung_id>", methods=["DELETE"])
+@flask_login.login_required
+def archivieren(kleidung_id):
+    kleidung = Kleidung.query.filter_by(id=kleidung_id).first()
+    kleidung.archiviert = True
+    db.session.add(kleidung)
+
+    aktive_waesche = Kleidungswaesche.query.filter_by(kleidung_id=kleidung_id, bis=None).one_or_none()
+    if aktive_waesche:
+        aktive_waesche.bis = datetime.now()
+        db.session.add(aktive_waesche)
+
+    aktive_leihe = Kleidungsleihe.query.filter_by(kleidung_id=kleidung_id, bis=None).one_or_none()
+    if aktive_leihe:
+        aktive_leihe.bis = datetime.now()
+        db.session.add(aktive_leihe)
+
+    db.session.commit()
+    return Response(status=204)
 
 
 @api.route("/toggle_waesche", methods=["POST"])

@@ -96,6 +96,27 @@ $(function () {
             url: "{{ url_for('kleidung_api.verleihen') }}",
         });
     });
+
+    // Kleidung löschen
+    $(document).on("click", ".loeschen-button", function (e) {
+        e.preventDefault();
+
+        const kleidung_id = $("#kleidung-details .modal").data("kleidung-id");
+
+        $.ajax({
+            cache: false,
+            method: "DELETE",
+            success: function () {
+                // Entferne Zeile aus Tabelle und schließe Details
+                $(`.kleidung[data-id=${kleidung_id}]`).remove();
+                $("#kleidung-details").find(".modal").modal("hide");
+            },
+            url: "{{ url_for('kleidung_api.archivieren', kleidung_id='_kleidung_id_') }}".replace(
+                "_kleidung_id_",
+                kleidung_id
+            ),
+        });
+    });
 });
 
 function refreshModal() {
