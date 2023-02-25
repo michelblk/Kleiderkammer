@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "kleiderkammer"
-version = "0.1.0"
-description = ""
+version = "0.9.1"
+description = "Kleiderkammer Inventarisierungssystem"
 authors = ["Michel Blank"]
 readme = "README.md"
 
