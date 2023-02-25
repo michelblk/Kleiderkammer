@@ -1,3 +1,4 @@
+import importlib.metadata
 import logging
 from datetime import datetime
 
@@ -76,6 +77,11 @@ def inject_userinfo():
 @app.context_processor
 def inject_now():
     return {"now": datetime.now()}
+
+
+@app.context_processor
+def inject_app_info():
+    return {"app_name": __package__.title(), "app_version": importlib.metadata.version(__package__)}
 
 
 @app.route("/")
