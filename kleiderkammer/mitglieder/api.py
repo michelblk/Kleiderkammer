@@ -2,8 +2,12 @@ from datetime import datetime
 
 import flask_login
 from flask import Blueprint, Response, request
+from sqlalchemy import nullsfirst
 
+from kleiderkammer.kleidung.model.kleidung import Kleidung
+from kleiderkammer.kleidung.model.kleidungskategorie import Kleidungskategorie
 from kleiderkammer.kleidung.model.kleidungsleihe import Kleidungsleihe
+from kleiderkammer.kleidung.model.kleidungstyp import Kleidungstyp
 from kleiderkammer.mitglieder.model.mitglied import Mitglied
 from kleiderkammer.util.db import db
 
@@ -59,3 +63,40 @@ def entfernen(mitglied_id):
 
     db.session.commit()
     return Response(status=204)
+
+
+@api.route("/<mitglied_id>/kleidung", methods=["GET"])
+@flask_login.login_required
+def kleidung(mitglied_id):
+    aktuelle_kleidungsstuecke = (
+        Kleidung.query.with_entities(
+            Kleidung.id,
+            Kleidung.code,
+            Kleidungskategorie.name.label("kategorie"),
+            Kleidungstyp.modell,
+            Kleidung.groesse,
+            Kleidungsleihe.von,
+            Kleidungsleihe.bis
+        )
+        .join(Kleidungstyp, Kleidung.typ_id == Kleidungstyp.id)
+        .join(Kleidungskategorie, Kleidungstyp.kategorie_id == Kleidungskategorie.id)
+        .join(Kleidungsleihe, Kleidung.id == Kleidungsleihe.kleidung_id)
+        .filter_by(mitglied_id=mitglied_id)
+        .order_by(nullsfirst(Kleidungsleihe.bis.desc()), Kleidung.code)
+        .all()
+    )
+
+    response = [
+        {
+            "id": kleidung.id,
+            "code": kleidung.code,
+            "kategorie": kleidung.kategorie,
+            "modell": kleidung.modell,
+            "groesse": kleidung.groesse,
+            "von": kleidung.von,
+            "bis": kleidung.bis
+        }
+        for kleidung in aktuelle_kleidungsstuecke
+    ]
+
+    return response

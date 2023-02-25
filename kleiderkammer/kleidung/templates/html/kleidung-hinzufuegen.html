@@ -6,22 +6,17 @@
     <form id="form">
         <div class="mb-3">
             <label class="form-label" for="modell">Modell</label>
-            <input
-                class="form-control"
-                id="modell"
-                name="modell"
-                type="text"
-                list="modelle"
-                autocomplete="off"
-                required
-            />
+            <input class="form-control" id="modell" name="modell" type="text" list="modelle" autocomplete="off" autofocus required />
             <datalist id="modelle">
                 {% for modell in modelle -%}
                 <option
                     data-hersteller="{{ modell.hersteller }}"
                     data-kategorie="{{ modell.kategorie.name }}"
-                    value="{{ modell.modell }}"
-                />
+                    data-modell="{{ modell.modell }}"
+                    value="option-{{ loop.index }}"
+                >
+                    {{ modell.modell }}&nbsp;&ndash;&nbsp;{{ modell.hersteller }}
+                </option>
                 {% endfor %}
             </datalist>
         </div>
@@ -39,15 +34,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="groesse">Gr&ouml;&szlig;e</label>
-            <input
-                class="form-control"
-                id="groesse"
-                name="groesse"
-                type="text"
-                list="groessen"
-                autocomplete="off"
-                required
-            />
+            <input class="form-control" id="groesse" name="groesse" type="text" list="groessen" autocomplete="off" required />
             <datalist id="groessen">
                 {% for groesse in groessen -%}
                 <option value="{{ groesse }}" />
@@ -63,6 +50,8 @@
                 type="number"
                 value="{{ now.year }}"
                 autocomplete="off"
+                min="1900"
+                max="{{ now.year }}"
                 required
             />
         </div>

@@ -2,29 +2,28 @@
     <div class="container">
         <div class="d-flex flex-wrap">
             {# Brand icon #}
-            <a
-                class="d-flex me-lg-auto align-items-center text-white text-decoration-none"
-                href="{{ url_for('kleidung.index') }}"
-            >
+            <a class="d-flex me-auto align-items-center text-white text-decoration-none" href="{{ url_for('kleidung.index') }}">
                 <i class="bi-fire d-flex justify-content-center flex-column" style="font-size: 1.75rem"></i>
-                {% if username %}
-                <span class="ms-2">{{ username }}</span>
-                {% endif %}
             </a>
 
             {# Navigation #}
             <ul class="nav text-small">
-                {%- macro active(view) -%} {% if request.endpoint == view %} text-white {% else %} text-secondary {%
-                endif %} {%- endmacro -%} {% macro navigation_item(title, view, icon_cls) %}
+                <!-- prettier-ignore -->
+                {%- macro active(view) -%}
+                    {% if request.endpoint == view %} text-white {% else %} text-secondary {% endif %}
+                {%- endmacro -%}
+                {% macro navigation_item(title, view, icon_cls) %}
                 <li>
                     <a class="nav-link {{ active(view) }}" href="{{ url_for(view) }}">
                         <i class="{{ icon_cls }} d-block text-center" style="font-size: 1.5rem"></i>
                         {{ title }}
                     </a>
                 </li>
-                {%- endmacro -%} {{ navigation_item('Kleidung', 'kleidung.index', 'bi-shop-window') }} {{
-                navigation_item('Mitglieder', 'mitglieder.index', 'bi-people') }} {{ navigation_item('Einstellungen',
-                'einstellungen.index', 'bi-gear') }}
+                {%- endmacro -%}
+                <!-- prettier-ignore -->
+                {{ navigation_item('Kleidung', 'kleidung.index', 'bi-shop-window') }}
+                {{ navigation_item('Mitglieder', 'mitglieder.index', 'bi-people') }}
+                {{ navigation_item('Einstellungen', 'einstellungen.index', 'bi-gear') }}
             </ul>
         </div>
     </div>

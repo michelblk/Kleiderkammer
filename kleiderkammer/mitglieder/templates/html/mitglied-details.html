@@ -1,6 +1,6 @@
 {% raw %}
 <script id="mitglied-details-template" type="text/x-handlebars-template">
-    <div class="modal" tabindex="-1" data-mitglied-id="{{mitgliedId}}">
+    <div class="modal modal-lg" tabindex="-1" data-mitglied-id="{{mitgliedId}}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -8,19 +8,32 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h6>Aktuelle Kleidungsstücke</h6>
-                    <table id="aktuelle-kleidung-table" class="w-100">
+                    <table id="kleidung-table" class="w-100">
                         <thead>
                             <tr>
                                 <th scope="col">Code</th>
+                                <th scope="col">Kategorie</th>
                                 <th scope="col">Modell</th>
                                 <th scope="col">Gr&ouml;&szlig;e</th>
                                 <th scope="col">Seit</th>
+                                <th scope="col">Bis</th>
                             </tr>
                         </thead>
                         <tbody>
                         </tbody>
                     </table>
+
+                    <div class="mt-3">
+                        <button
+                            class="btn btn-secondary btn-sm"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target=".past-clothing"
+                            aria-expanded="false"
+                        >
+                            Zeige/verstecke vergangene Ereignisse
+                        </button>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-sm float-start loeschen-button">L&ouml;schen</button>
@@ -30,14 +43,16 @@
     </div>
 </script>
 
-<script id="aktuelle-kleidung-row-template" type="text/x-handlebars-template">
+<script id="kleidung-row-template" type="text/x-handlebars-template">
     {{#each this}}
-        <tr data-kleidung-id="{{id}}">
-            <td>{{code}}</td>
-            <td>{{modell}}</td>
-            <td>{{groesse}}</td>
-            <td>{{von}}</td>
-        </tr>
+    <tr data-kleidung-id="{{id}}" class="{{#if bis}}past-clothing collapse{{/if}}">
+        <td>{{code}}</td>
+        <td>{{kategorie}}</td>
+        <td>{{modell}}</td>
+        <td>{{groesse}}</td>
+        <td>{{format_date von "dd.MM.yyyy HH:mm"}}</td>
+        <td>{{format_date bis "dd.MM.yyyy HH:mm"}}</td>
+    </tr>
     {{/each}}
 </script>
 

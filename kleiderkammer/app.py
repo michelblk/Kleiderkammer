@@ -5,6 +5,7 @@ from datetime import datetime
 import flask_login
 from flask import Flask, redirect, session
 from flask_login import current_user
+from flask_minify import minify
 from flask_session import Session
 
 from kleiderkammer.einstellungen.api import api as einstellungen_api
@@ -25,6 +26,9 @@ app.config.from_prefixed_env()
 
 # configure logging
 logging.getLogger("werkzeug").disabled = True
+
+# minify output to make html/css output as small as possible. Minimizing js causing error when handlebars is used
+minify(app=app, passive=False, html=True, js=False, cssless=True, fail_safe=True, static=False)
 
 # register blueprints
 app.register_blueprint(login, url_prefix="/login")

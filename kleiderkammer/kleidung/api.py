@@ -126,43 +126,12 @@ def toggle_waesche():
     return Response(status=400)
 
 
-@api.route("/aktuelleKleidung", methods=["GET"])
-@flask_login.login_required
-def aktuelle_kleidung():
-    mitglied_id = request.args["mitgliedId"]
-
-    aktuelle_kleidungsstuecke = (
-        Kleidung.query.with_entities(
-            Kleidung.id,
-            Kleidung.code,
-            Kleidungstyp.modell,
-            Kleidung.groesse,
-            Kleidungsleihe.von,
-        )
-        .join(Kleidungstyp, Kleidung.typ_id == Kleidungstyp.id)
-        .join(Kleidungsleihe, Kleidung.id == Kleidungsleihe.kleidung_id)
-        .filter_by(mitglied_id=mitglied_id, bis=None)
-        .all()
-    )
-
-    response = [
-        {
-            "id": kleidung.id,
-            "code": kleidung.code,
-            "modell": kleidung.modell,
-            "groesse": kleidung.groesse,
-            "von": kleidung.von,
-        }
-        for kleidung in aktuelle_kleidungsstuecke
-    ]
-
-    return response
-
-
 @api.route("/status", methods=["GET"])
 @flask_login.login_required
 def status():
     kleidung_id = request.args["kleidungId"]
+
+    kleidung = Kleidung.query.filter_by(id=kleidung_id).first()
 
     letzte_waesche = (
         Kleidungswaesche.query.filter_by(kleidung_id=kleidung_id)
@@ -179,6 +148,7 @@ def status():
     )
 
     response = {
+        "archiviert": kleidung.archiviert,
         "isInWaesche": letzte_waesche.bis is None if letzte_waesche else False,
         "zuletztGewaschen": letzte_waesche.von if letzte_waesche else None,
         "leihe": {

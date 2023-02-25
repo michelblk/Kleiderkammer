@@ -1,3 +1,5 @@
 .venv
 node_modules
-kleiderkammer/static/assets
+bootstrap*
+handlebars*
+jquery*

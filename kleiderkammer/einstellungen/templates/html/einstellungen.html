@@ -1,16 +1,11 @@
 {% extends 'base.html' %} {% block title %}Einstellungen{% endblock %} {% block content %}
 <div class="mt-1">
-    <a class="btn btn-secondary float-end" href="{{ url_for('login_api.logout') }}">Abmelden</a>
+    <a class="btn btn-secondary float-end" href="{{ url_for('login_api.logout') }}">{{ username.title() }} abmelden</a>
 </div>
 <div class="accordion mt-1" id="accordion">
     <div class="accordion-item">
         <h2 class="accordion-header">
-            <button
-                class="accordion-button collapsed"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapsePassword"
-                type="button"
-            >
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapsePassword" type="button">
                 Kennwort &auml;ndern
             </button>
         </h2>
@@ -21,12 +16,7 @@
 
     <div class="accordion-item">
         <h2 class="accordion-header">
-            <button
-                class="accordion-button collapsed"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseCreateUser"
-                type="button"
-            >
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseCreateUser" type="button">
                 Benutzer anlegen
             </button>
         </h2>
@@ -37,17 +27,34 @@
 
     <div class="accordion-item">
         <h2 class="accordion-header">
-            <button
-                class="accordion-button collapsed"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseDeleteUser"
-                type="button"
-            >
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseDeleteUser" type="button">
                 Benutzer löschen
             </button>
         </h2>
         <div class="accordion-collapse collapse" id="collapseDeleteUser" data-bs-parent="#accordion">
             <div class="accordion-body">{% include 'html/benutzer-loeschen.html' %}</div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseRestoreKleidung" type="button">
+                Gelöschte Kleidung wiederherstellen
+            </button>
+        </h2>
+        <div class="accordion-collapse collapse" id="collapseRestoreKleidung" data-bs-parent="#accordion">
+            <div class="accordion-body">Funktion noch nicht implementiert</div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapseRestoreMitglied" type="button">
+                Gelöschte Mitglieder wiederherstellen
+            </button>
+        </h2>
+        <div class="accordion-collapse collapse" id="collapseRestoreMitglied" data-bs-parent="#accordion">
+            <div class="accordion-body">Funktion noch nicht implementiert</div>
         </div>
     </div>
 </div>

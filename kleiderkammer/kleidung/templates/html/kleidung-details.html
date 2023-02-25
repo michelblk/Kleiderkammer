@@ -11,8 +11,8 @@
                     <div id="kleidung-actions"></div>
                     <div id="kleidung-history"></div>
                 </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-sm float-start loeschen-button">L&ouml;schen</button>
+                <div class="modal-footer justify-content-start">
+                    <div id="kleidung-edit-actions"></div>
                 </div>
             </div>
         </div>
@@ -26,62 +26,52 @@
             <td>Standort</td>
             <td>
                 {{#if leihe.mitglied}}
-                    {{leihe.mitglied.nachname}},
-                    {{leihe.mitglied.vorname}}
+                    {{leihe.mitglied.nachname}},&nbsp;{{leihe.mitglied.vorname}}
                 {{else}}
-                    <!-- TODO zwischen Inaktiv und Lager differenzieren -->
-                    Lager
+                    {{#if archiviert}}
+                        Archiviert
+                    {{else}}
+                        Lager
+                    {{/if}}
                 {{/if}}
             </td>
             <td>
-                {{#if leihe.mitglied}}
-                    <button
-                        type="button"
-                        class="btn btn-secondary btn-sm float-end verleihen-button"
-                        data-action="zuruecknehmen"
-                    >
-                        Zur&uuml;cknehmen
-                    </button>
-                {{else}}
-                    <button
-                        type="button"
-                        class="btn btn-secondary btn-sm float-end verleihen-button"
-                        data-action="verleihen"
-                    >
-                        Verleihen
-                    </button>
-                {{/if}}
+                {{#unless archiviert}}
+                    {{#if leihe.mitglied}}
+                        <button type="button" class="btn btn-secondary btn-sm float-end verleihen-button" data-action="zuruecknehmen">
+                            Zur&uuml;cknehmen
+                        </button>
+                    {{else}}
+                        <button type="button" class="btn btn-secondary btn-sm float-end verleihen-button" data-action="verleihen">
+                            Verleihen
+                        </button>
+                    {{/if}}
+                {{/unless}}
             </td>
         </tr>
         <tr>
             <td>Letzte W&auml;sche</td>
-            <td>{{zuletztGewaschen}}</td>
+            <td>{{format_date zuletztGewaschen "dd.MM.yyyy"}}</td>
             <td>
-                {{#if isInWaesche}}
-                    <button
-                        type="button"
-                        class="btn btn-secondary btn-sm float-end waschen-button"
-                        data-action="erhalten"
-                    >
-                        W&auml;sche erhalten
-                    </button>
-                {{else}}
-                    <button
-                        type="button"
-                        class="btn btn-secondary btn-sm float-end waschen-button"
-                        data-action="abgeben"
-                    >
-                        W&auml;sche abgeben
-                    </button>
-                {{/if}}
+                {{#unless archiviert}}
+                    {{#if isInWaesche}}
+                        <button type="button" class="btn btn-secondary btn-sm float-end waschen-button" data-action="erhalten">
+                            W&auml;sche erhalten
+                        </button>
+                    {{else}}
+                        <button type="button" class="btn btn-secondary btn-sm float-end waschen-button" data-action="abgeben">
+                            W&auml;sche abgeben
+                        </button>
+                    {{/if}}
+                {{/unless}}
             </td>
         </tr>
     </table>
 </script>
 
 <script id="mitglied-auswaehlen-template" type="text/x-handlebars-template">
-    <div class="modal modal-over-modal" tabindex="-1" data-kleidung-id="{{ kleidungId }}">
-        <div class="modal-dialog">
+    <div class="modal modal-over-modal" tabindex="-1" data-kleidung-id="{{kleidungId}}">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Mitglied ausw&auml;hlen</h5>
@@ -98,18 +88,17 @@
                         </thead>
                         <tbody>
                             {{#each mitglieder}}
-                            <tr>
-                                <td>{{ vorname }}</td>
-                                <td>{{ nachname }}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-secondary mitglied-waehlen"
-                                            data-mitglied-id="{{ id }}">
-                                        Ausw&auml;hlen
-                                    </button>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>{{vorname}}</td>
+                                    <td>{{nachname}}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-secondary mitglied-waehlen" data-mitglied-id="{{id}}">
+                                            Ausw&auml;hlen
+                                        </button>
+                                    </td>
+                                </tr>
                             {{/each}}
-                            </tbod
+                        </tbody>
                     </table>
                 </div>
                 <div class="modal-footer">
@@ -131,8 +120,8 @@
         <tbody>
             {{#each this}}
                 <tr>
-                    <td>{{von}}</td>
-                    <td>{{bis}}</td>
+                    <td>{{format_date von "dd.MM.yyyy HH:mm"}}</td>
+                    <td>{{format_date bis "dd.MM.yyyy HH:mm"}}</td>
                     <td>
                         {{aktion}}
                         {{#if mitglied}}
@@ -144,6 +133,16 @@
             {{/each}}
         </tbody>
     </table>
+</script>
+
+<script id="kleidung-edit-actions-template" type="text/x-handlebars-template">
+    <div>
+        {{#if archiviert}}
+            <button type="button" class="btn btn-sm float-start restore-button">Wiederherstellen</button>
+        {{else}}
+            <button type="button" class="btn btn-sm float-start loeschen-button">L&ouml;schen</button>
+        {{/if}}
+    </div>
 </script>
 
 {% endraw %}

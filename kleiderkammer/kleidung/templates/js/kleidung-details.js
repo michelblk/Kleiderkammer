@@ -112,10 +112,7 @@ $(function () {
                     $(`.kleidung[data-id=${kleidung_id}]`).remove();
                     $("#kleidung-details").find(".modal").modal("hide");
                 },
-                url: "{{ url_for('kleidung_api.archivieren', kleidung_id='_kleidung_id_') }}".replace(
-                    "_kleidung_id_",
-                    kleidung_id
-                ),
+                url: "{{ url_for('kleidung_api.archivieren', kleidung_id='_kleidung_id_') }}".replace("_kleidung_id_", kleidung_id),
             });
         }
     });
@@ -150,8 +147,12 @@ function updateKleidungsstatus(data) {
     const actionsTemplateObj = $("#kleidung-actions-template");
     const actionsTemplate = Handlebars.compile(actionsTemplateObj.html());
     const actions = $("#kleidung-actions");
-
     actions.html(actionsTemplate(data));
+
+    const editActionsTemplateObj = $("#kleidung-edit-actions-template");
+    const editActionsTemplate = Handlebars.compile(editActionsTemplateObj.html());
+    const editActions = $("#kleidung-edit-actions");
+    editActions.html(editActionsTemplate(data));
 }
 
 function requestHistory(kleidungId, success, failure) {
@@ -164,10 +165,7 @@ function requestHistory(kleidungId, success, failure) {
                 data["leihen"] = leihen;
             },
             failure: failure,
-            url: "{{ url_for('kleidung_api.leihen', kleidung_id='_kleidung_id_') }}".replace(
-                "_kleidung_id_",
-                kleidungId
-            ),
+            url: "{{ url_for('kleidung_api.leihen', kleidung_id='_kleidung_id_') }}".replace("_kleidung_id_", kleidungId),
         }),
         $.ajax({
             cache: false,
@@ -176,10 +174,7 @@ function requestHistory(kleidungId, success, failure) {
                 data["waeschen"] = waeschen;
             },
             failure: failure,
-            url: "{{ url_for('kleidung_api.waeschen', kleidung_id='_kleidung_id_') }}".replace(
-                "_kleidung_id_",
-                kleidungId
-            ),
+            url: "{{ url_for('kleidung_api.waeschen', kleidung_id='_kleidung_id_') }}".replace("_kleidung_id_", kleidungId),
         })
     ).then(function () {
         const merged_data = [];
@@ -216,8 +211,6 @@ function requestHistory(kleidungId, success, failure) {
             }
             return Date.parse(b.von) - Date.parse(a.von);
         });
-
-        console.log(merged_data);
 
         success(merged_data);
     });
