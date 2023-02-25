@@ -2,7 +2,6 @@ from datetime import datetime
 
 import flask_login
 from flask import Blueprint, Response, request
-from sqlalchemy import func
 from sqlalchemy.exc import NoResultFound
 
 from kleiderkammer.kleidung.model.kleidung import Kleidung
@@ -215,7 +214,7 @@ def verleihen():
     kleidung_id = request.form["kleidungId"]
 
     leihe = Kleidungsleihe()
-    leihe.von = func.now()
+    leihe.von = datetime.now()
     leihe.kleidung_id = kleidung_id
     leihe.mitglied_id = mitglied_id
 
@@ -232,7 +231,7 @@ def zuruecknehmen():
 
     leihe = Kleidungsleihe.query.filter_by(kleidung_id=kleidung_id, bis=None).one()
 
-    leihe.bis = func.now()
+    leihe.bis = datetime.now()
 
     db.session.add(leihe)
     db.session.commit()
