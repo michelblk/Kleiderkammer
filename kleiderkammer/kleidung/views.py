@@ -102,9 +102,15 @@ def index():
 @kleidung.route("/hinzufuegen", methods=["GET"])
 @flask_login.login_required
 def hinzufuegen():
-    modelle = Kleidungstyp.query.all()
+    modelle = Kleidungstyp.query \
+        .order_by(Kleidungstyp.kategorie_id, Kleidungstyp.modell, Kleidungstyp.hersteller) \
+        .all()
 
-    groessen = Kleidung.query.with_entities(Kleidung.groesse).distinct().all()
+    groessen = Kleidung.query \
+        .with_entities(Kleidung.groesse) \
+        .distinct() \
+        .order_by(Kleidung.groesse) \
+        .all()
     groessen = [r.groesse for r in groessen]
 
     return render_template(
