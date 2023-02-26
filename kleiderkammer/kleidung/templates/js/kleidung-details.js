@@ -108,8 +108,7 @@ $(function () {
                 cache: false,
                 method: "DELETE",
                 success: function () {
-                    // Entferne Zeile aus Tabelle und schließe Details
-                    $(`.kleidung[data-id=${kleidung_id}]`).remove();
+                    // Schließe Details
                     $("#kleidung-details").find(".modal").modal("hide");
                 },
                 url: "{{ url_for('kleidung_api.archivieren', kleidung_id='_kleidung_id_') }}".replace("_kleidung_id_", kleidung_id),
