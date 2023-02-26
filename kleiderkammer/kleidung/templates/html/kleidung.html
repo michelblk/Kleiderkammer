@@ -53,7 +53,13 @@
             </thead>
             <tbody id="kleidungstabelle">
                 {% for row in rows -%}
-                <tr class="kleidung" data-id="{{ row.id }}" data-typ="{{ row.typ_id }}" data-kategorie-id="{{ row.kategorie_id }}">
+                <tr
+                    class="kleidung"
+                    data-id="{{ row.id }}"
+                    data-typ="{{ row.typ_id }}"
+                    data-kategorie-id="{{ row.kategorie_id }}"
+                    style="cursor: pointer"
+                >
                     <th data-column="code" scope="row">{{ row.code }}</th>
                     <td data-column="kategorie">{{ row.kategorie_name }}</td>
                     <td data-column="hersteller">{{ row.typ_hersteller }}</td>

@@ -13,7 +13,7 @@
         </thead>
         <tbody>
             {% for row in rows %}
-            <tr class="mitglied" data-id="{{ row.id }}">
+            <tr class="mitglied" data-id="{{ row.id }}" style="cursor: pointer">
                 <td data-column="nachname">{{ row.nachname }}</td>
                 <td data-column="vorname">{{ row.vorname }}</td>
                 <td>{{ row.ausgeliehene_kleidung_count }}</td>
