@@ -1,11 +1,16 @@
+from operator import and_
+
 import flask_login
 from flask import Blueprint, render_template
+from sqlalchemy import case
 from sqlalchemy.sql.functions import coalesce, count
 
 from kleiderkammer.kleidung.model.kleidung import Kleidung
 from kleiderkammer.kleidung.model.kleidungskategorie import Kleidungskategorie
+from kleiderkammer.kleidung.model.kleidungsleihe import Kleidungsleihe
 from kleiderkammer.kleidung.model.kleidungstyp import Kleidungstyp
 from kleiderkammer.kleidung.model.kleidungswaesche import Kleidungswaesche
+from kleiderkammer.mitglieder.model.mitglied import Mitglied
 
 kleidung = Blueprint("kleidung", __name__, template_folder="templates")
 
@@ -15,15 +20,11 @@ kleidung = Blueprint("kleidung", __name__, template_folder="templates")
 def index():
     rows = (
         Kleidung.query.filter_by(archiviert=False)
-        .join(
-            Kleidungswaesche, Kleidung.id == Kleidungswaesche.kleidung_id, isouter=True
-        )
+        .join(Kleidungswaesche, Kleidung.id == Kleidungswaesche.kleidung_id, isouter=True)
         .join(Kleidungstyp, Kleidung.typ_id == Kleidungstyp.id, isouter=True)
-        .join(
-            Kleidungskategorie,
-            Kleidungstyp.kategorie_id == Kleidungskategorie.id,
-            isouter=True,
-        )
+        .join(Kleidungskategorie, Kleidungstyp.kategorie_id == Kleidungskategorie.id, isouter=True)
+        .join(Kleidungsleihe, and_(Kleidungsleihe.bis == None, Kleidung.id == Kleidungsleihe.kleidung_id), isouter=True)
+        .join(Mitglied, Mitglied.id == Kleidungsleihe.mitglied_id, isouter=True)
         .with_entities(
             Kleidung.id,
             Kleidung.typ_id,
@@ -35,6 +36,12 @@ def index():
             Kleidung.groesse,
             Kleidung.anschaffungsjahr,
             coalesce(count(Kleidungswaesche.kleidung_id), 0).label("waeschen"),
+            case([
+                (coalesce(count(Kleidungswaesche.von), 0) == coalesce(count(Kleidungswaesche.bis), 0), False)
+            ], else_=True).label("in_waesche"),
+            case([
+                (Kleidungsleihe.mitglied_id != None, Mitglied.nachname + ", " + Mitglied.vorname)
+            ], else_=None).label("ausgeliehen_an")
         )
         .group_by(Kleidung)
         .order_by(Kleidung.code)

@@ -47,6 +47,8 @@
                     {{ table_header('Jahr', 'jahr', jahre) }}
                     <!-- prettier-ignore -->
                     {{ table_header('W\xE4schen', 'waeschen', waeschen) }}
+                    <!-- prettier-ignore -->
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody id="kleidungstabelle">
@@ -59,6 +61,13 @@
                     <td data-column="groesse">{{ row.groesse }}</td>
                     <td data-column="jahr">{{ row.anschaffungsjahr }}</td>
                     <td data-column="waeschen">{{ row.waeschen }}</td>
+                    <td data-column="status">
+                        <span
+                            class="badge {{ 'bg-primary' if row.in_waesche else ('bg-success' if not row.ausgeliehen_an else 'bg-light text-dark') }}"
+                        >
+                            {% if row.ausgeliehen_an %} {{ row.ausgeliehen_an }} {% else %} Lager {% endif %}
+                        </span>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
