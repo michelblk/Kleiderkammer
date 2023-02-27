@@ -56,7 +56,9 @@ def entfernen(mitglied_id):
     mitglied.aktiv = False
     db.session.add(mitglied)
 
-    aktive_leihe = Kleidungsleihe.query.filter_by(mitglied_id=mitglied_id, bis=None).one_or_none()
+    aktive_leihe = Kleidungsleihe.query.filter_by(
+        mitglied_id=mitglied_id, bis=None
+    ).one_or_none()
     if aktive_leihe:
         aktive_leihe.bis = datetime.now()
         db.session.add(aktive_leihe)
@@ -76,7 +78,7 @@ def kleidung(mitglied_id):
             Kleidungstyp.modell,
             Kleidung.groesse,
             Kleidungsleihe.von,
-            Kleidungsleihe.bis
+            Kleidungsleihe.bis,
         )
         .join(Kleidungstyp, Kleidung.typ_id == Kleidungstyp.id)
         .join(Kleidungskategorie, Kleidungstyp.kategorie_id == Kleidungskategorie.id)
@@ -94,7 +96,7 @@ def kleidung(mitglied_id):
             "modell": kleidung.modell,
             "groesse": kleidung.groesse,
             "von": kleidung.von,
-            "bis": kleidung.bis
+            "bis": kleidung.bis,
         }
         for kleidung in aktuelle_kleidungsstuecke
     ]

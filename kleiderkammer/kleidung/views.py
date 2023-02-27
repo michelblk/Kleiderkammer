@@ -20,10 +20,20 @@ kleidung = Blueprint("kleidung", __name__, template_folder="templates")
 def index():
     rows = (
         Kleidung.query.filter_by(archiviert=False)
-        .join(Kleidungswaesche, Kleidung.id == Kleidungswaesche.kleidung_id, isouter=True)
+        .join(
+            Kleidungswaesche, Kleidung.id == Kleidungswaesche.kleidung_id, isouter=True
+        )
         .join(Kleidungstyp, Kleidung.typ_id == Kleidungstyp.id, isouter=True)
-        .join(Kleidungskategorie, Kleidungstyp.kategorie_id == Kleidungskategorie.id, isouter=True)
-        .join(Kleidungsleihe, and_(Kleidungsleihe.bis == None, Kleidung.id == Kleidungsleihe.kleidung_id), isouter=True)
+        .join(
+            Kleidungskategorie,
+            Kleidungstyp.kategorie_id == Kleidungskategorie.id,
+            isouter=True,
+        )
+        .join(
+            Kleidungsleihe,
+            and_(Kleidungsleihe.bis == None, Kleidung.id == Kleidungsleihe.kleidung_id),
+            isouter=True,
+        )
         .join(Mitglied, Mitglied.id == Kleidungsleihe.mitglied_id, isouter=True)
         .with_entities(
             Kleidung.id,
@@ -36,12 +46,25 @@ def index():
             Kleidung.groesse,
             Kleidung.anschaffungsjahr,
             coalesce(count(Kleidungswaesche.kleidung_id), 0).label("waeschen"),
-            case([
-                (coalesce(count(Kleidungswaesche.von), 0) == coalesce(count(Kleidungswaesche.bis), 0), False)
-            ], else_=True).label("in_waesche"),
-            case([
-                (Kleidungsleihe.mitglied_id != None, Mitglied.nachname + ", " + Mitglied.vorname)
-            ], else_=None).label("ausgeliehen_an")
+            case(
+                [
+                    (
+                        coalesce(count(Kleidungswaesche.von), 0)
+                        == coalesce(count(Kleidungswaesche.bis), 0),
+                        False,
+                    )
+                ],
+                else_=True,
+            ).label("in_waesche"),
+            case(
+                [
+                    (
+                        Kleidungsleihe.mitglied_id != None,
+                        Mitglied.nachname + ", " + Mitglied.vorname,
+                    )
+                ],
+                else_=None,
+            ).label("ausgeliehen_an"),
         )
         .group_by(Kleidung)
         .order_by(Kleidung.code)
@@ -109,15 +132,16 @@ def index():
 @kleidung.route("/hinzufuegen", methods=["GET"])
 @flask_login.login_required
 def hinzufuegen():
-    modelle = Kleidungstyp.query \
-        .order_by(Kleidungstyp.kategorie_id, Kleidungstyp.modell, Kleidungstyp.hersteller) \
-        .all()
+    modelle = Kleidungstyp.query.order_by(
+        Kleidungstyp.kategorie_id, Kleidungstyp.modell, Kleidungstyp.hersteller
+    ).all()
 
-    groessen = Kleidung.query \
-        .with_entities(Kleidung.groesse) \
-        .distinct() \
-        .order_by(Kleidung.groesse) \
+    groessen = (
+        Kleidung.query.with_entities(Kleidung.groesse)
+        .distinct()
+        .order_by(Kleidung.groesse)
         .all()
+    )
     groessen = [r.groesse for r in groessen]
 
     return render_template(

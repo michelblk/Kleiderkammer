@@ -28,7 +28,15 @@ app.config.from_prefixed_env()
 logging.getLogger("werkzeug").disabled = True
 
 # minify output to make html/css output as small as possible. Minimizing js causing error when handlebars is used
-minify(app=app, passive=False, html=True, js=False, cssless=True, fail_safe=True, static=False)
+minify(
+    app=app,
+    passive=False,
+    html=True,
+    js=False,
+    cssless=True,
+    fail_safe=True,
+    static=False,
+)
 
 # register blueprints
 app.register_blueprint(login, url_prefix="/login")
@@ -85,7 +93,10 @@ def inject_now():
 
 @app.context_processor
 def inject_app_info():
-    return {"app_name": __package__.title(), "app_version": importlib.metadata.version(__package__)}
+    return {
+        "app_name": __package__.title(),
+        "app_version": importlib.metadata.version(__package__),
+    }
 
 
 @app.route("/")

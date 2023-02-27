@@ -28,12 +28,12 @@ def hinzufuegen():
     anschaffungsjahr = data["anschaffungsjahr"]
 
     if (
-            modell
-            and hersteller
-            and kategoriename
-            and code
-            and groesse
-            and anschaffungsjahr
+        modell
+        and hersteller
+        and kategoriename
+        and code
+        and groesse
+        and anschaffungsjahr
     ):
         # get kategorie id
         try:
@@ -82,12 +82,16 @@ def archivieren(kleidung_id):
     kleidung.archiviert = True
     db.session.add(kleidung)
 
-    aktive_waesche = Kleidungswaesche.query.filter_by(kleidung_id=kleidung_id, bis=None).one_or_none()
+    aktive_waesche = Kleidungswaesche.query.filter_by(
+        kleidung_id=kleidung_id, bis=None
+    ).one_or_none()
     if aktive_waesche:
         aktive_waesche.bis = datetime.now()
         db.session.add(aktive_waesche)
 
-    aktive_leihe = Kleidungsleihe.query.filter_by(kleidung_id=kleidung_id, bis=None).one_or_none()
+    aktive_leihe = Kleidungsleihe.query.filter_by(
+        kleidung_id=kleidung_id, bis=None
+    ).one_or_none()
     if aktive_leihe:
         aktive_leihe.bis = datetime.now()
         db.session.add(aktive_leihe)
